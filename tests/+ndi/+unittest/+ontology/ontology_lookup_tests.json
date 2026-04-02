@@ -365,6 +365,13 @@
       "expected_name": "FASTA"
     },
     {
+      "ontology": "IAO",
+      "lookup_string": "IAO:0000070",
+      "should_succeed": true,
+      "expected_id": "IAO:0000070",
+      "expected_name": "bibliography"
+    },
+    {
       "ontology": "EDAM",
       "lookup_string": "format:1929",
       "should_succeed": true,
@@ -372,11 +379,60 @@
       "expected_name": "FASTA"
     },
     {
+      "ontology": "schema",
+      "lookup_string": "schema:Person",
+      "should_succeed": true,
+      "expected_id": "schema:Person",
+      "expected_name": "Person"
+    },
+    {
       "ontology": "EDAM",
       "lookup_string": "format:FASTA",
       "should_succeed": true,
       "expected_id": "EDAM:1929",
       "expected_name": "FASTA"
+    },
+    {
+      "ontology": "IAO",
+      "lookup_string": "IAO:document",
+      "should_succeed": true,
+      "expected_id": "IAO:0000310",
+      "expected_name": "document"
+    },
+    {
+      "ontology": "schema",
+      "lookup_string": "schema:Dataset",
+      "should_succeed": true,
+      "expected_id": "schema:Dataset",
+      "expected_name": "Dataset"
+    },
+    {
+      "ontology": "IAO",
+      "lookup_string": "IAO:0000310",
+      "should_succeed": true,
+      "expected_id": "IAO:0000310",
+      "expected_name": "document"
+    },
+    {
+      "ontology": "schema",
+      "lookup_string": "schema:Organization",
+      "should_succeed": true,
+      "expected_id": "schema:Organization",
+      "expected_name": "Organization"
+    },
+    {
+      "ontology": "IAO",
+      "lookup_string": "IAO:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "schema",
+      "lookup_string": "schema:NoSuchSchemaOrgTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
