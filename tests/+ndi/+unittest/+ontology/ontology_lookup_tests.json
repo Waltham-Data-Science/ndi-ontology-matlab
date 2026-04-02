@@ -366,10 +366,10 @@
     },
     {
       "ontology": "IAO",
-      "lookup_string": "IAO:0000070",
+      "lookup_string": "IAO:0000310",
       "should_succeed": true,
-      "expected_id": "IAO:0000070",
-      "expected_name": "bibliography"
+      "expected_id": "IAO:0000310",
+      "expected_name": "document"
     },
     {
       "ontology": "EDAM",
@@ -408,10 +408,10 @@
     },
     {
       "ontology": "IAO",
-      "lookup_string": "IAO:0000310",
+      "lookup_string": "IAO:0000030",
       "should_succeed": true,
-      "expected_id": "IAO:0000310",
-      "expected_name": "document"
+      "expected_id": "IAO:0000030",
+      "expected_name": "information content entity"
     },
     {
       "ontology": "schema",
