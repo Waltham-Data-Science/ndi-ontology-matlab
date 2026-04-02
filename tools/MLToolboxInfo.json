@@ -1,0 +1,14 @@
+{
+    "Namespace" : "ndi",
+    "ToolboxOptions": {
+        "Identifier": "a1b2c3d4-e5f6-7890-abcd-ef1234567890",
+        "ToolboxName": "ndi-ontology-matlab",
+        "AuthorName": "Waltham Data Science",
+        "AuthorEmail": "steve@walthamdatascience.com",
+        "AuthorCompany": "Waltham Data Science",
+        "Summary": "MATLAB implementation of ndi.ontology classes for looking up terms across biological and scientific ontologies",
+        "Description": "Provides a unified interface (ndi.ontology.lookup) for querying ontology terms from CL, UBERON, CHEBI, PATO, NCBITaxon, NCIm, NCIT, OM, PubChem, RRID, SNOMED, EFO, EDAM, EMPTY, NDIC, and WBStrain. Part of the NDI (Neuroscience Data Interface) ecosystem.",
+        "MinimumMatlabRelease": "R2021b",
+        "MaximumMatlabRelease": ""
+    }
+}
