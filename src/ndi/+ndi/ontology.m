@@ -14,6 +14,58 @@ classdef ontology
 %   instantiates it, and calls the specific lookupTermOrID method implemented
 %   by that subclass.
 %
+%   Key concepts: "id" (the node) and "name" (the label)
+%   -------------------------------------------------
+%   Different ontologies represent their terms in different ways, but
+%   ndi.ontology.lookup always returns a consistent pair: an ID and a NAME.
+%
+%     ID (the "node")   - The canonical, unique identifier for a concept in
+%                         the ontology. This is the string you would use to
+%                         unambiguously reference the term in code or data.
+%
+%     NAME (the "label") - The human-readable label that describes the concept.
+%                          This is what a person would say or read.
+%
+%   Ontologies differ in what their IDs look like:
+%
+%     Style 1 - Numbered nodes with separate labels (most OBO ontologies):
+%       The ID is a prefix followed by a numeric code. The name is a
+%       separate human-readable label stored as metadata on that node.
+%
+%         ndi.ontology.lookup('CL:0000540')
+%           id = 'CL:0000540'    <- numbered node
+%           name = 'neuron'      <- human-readable label for that node
+%
+%         ndi.ontology.lookup('UBERON:heart')
+%           id = 'UBERON:0000948' <- the canonical numbered node is resolved
+%           name = 'heart'        <- the label (same as what you searched)
+%
+%     Style 2 - Term-style nodes (e.g., OM - Ontology of Units of Measure):
+%       The ID is a prefix followed by a descriptive term. The node itself
+%       is human-readable. The name is a normalized (lowercase) form of
+%       that term.
+%
+%         ndi.ontology.lookup('OM:Temperature')
+%           id = 'OM:Temperature'  <- the node IS a readable term
+%           name = 'temperature'   <- normalized lowercase label
+%
+%     Style 3 - External database IDs (e.g., PubChem, NCIm, NDIC):
+%       The ID is whatever identifier the external source uses (e.g., a
+%       PubChem CID number or an NCI concept code). The prefix may not
+%       appear in the returned ID.
+%
+%         ndi.ontology.lookup('PubChem:Aspirin')
+%           id = '2244'         <- PubChem compound ID (CID)
+%           name = 'aspirin'    <- compound name
+%
+%         ndi.ontology.lookup('NCIm:C0018787')
+%           id = 'C0018787'     <- NCI Metathesaurus concept code
+%           name = 'Heart'      <- concept name
+%
+%   In all cases, you can look up a term by either its ID or its name.
+%   The lookup function figures out which you provided and returns the
+%   canonical id and name pair.
+%
 %   Caching:
 %   --------
 %   For efficiency, this class uses a centralized, persistent cache within the main
@@ -75,11 +127,108 @@ methods (Static)
         %
         %   [ID, NAME, PREFIX, DEFINITION, SYNONYMS, SHORTNAME] = ndi.ontology.lookup(LOOKUPSTRING)
         %
-        %   Looks up a term using a prefixed string (e.g., 'CL:0000000', 'OM:metre').
-        %   This function uses a persistent cache to store results. Subsequent lookups
-        %   for the same string are returned instantly from memory.
+        %   Looks up a term using a prefixed string (e.g., 'CL:0000540', 'OM:metre').
+        %   You can provide either the numeric/formal ID or the human-readable
+        %   name after the prefix — the function determines which you meant.
         %
-        %   To clear the cache, call: ndi.ontology.lookup('clear');
+        %   Input:
+        %   ------
+        %     LOOKUPSTRING - A string in 'PREFIX:TermOrID' format, where PREFIX
+        %       identifies the ontology (e.g., 'CL', 'OM', 'PubChem') and the
+        %       part after the colon is either:
+        %         - A numeric/formal ID:  'CL:0000540', 'CHEBI:15377', 'PubChem:2244'
+        %         - A human-readable name: 'CL:neuron', 'CHEBI:water', 'PubChem:Aspirin'
+        %
+        %   Outputs:
+        %   --------
+        %     ID         - The canonical identifier (the "node") for the term.
+        %                  For numbered ontologies: 'CL:0000540', 'UBERON:0000948'
+        %                  For term-style ontologies: 'OM:Temperature'
+        %                  For external databases: '2244' (PubChem CID), 'C0018787' (NCIm)
+        %
+        %     NAME       - The human-readable label for the term.
+        %                  Examples: 'neuron', 'heart', 'temperature', 'aspirin'
+        %
+        %     PREFIX     - The ontology prefix extracted from the input.
+        %                  Examples: 'CL', 'OM', 'PubChem', 'UBERON'
+        %
+        %     DEFINITION - A text description of the term (if available in the ontology).
+        %
+        %     SYNONYMS   - A cell array of alternative names for the term.
+        %
+        %     SHORTNAME  - A MATLAB-variable-safe version of NAME (CamelCase, no spaces).
+        %                  Examples: 'Neuron', 'Heart', 'Temperature', 'MolarVolumeUnit'
+        %
+        %   Examples:
+        %   ---------
+        %     % --- Numbered-node ontologies (CL, UBERON, CHEBI, PATO, EMPTY) ---
+        %     % These have numeric IDs like 'PREFIX:0001234' and separate labels.
+        %     % You can look up by ID or by name; both return the same result.
+        %
+        %     [id, name] = ndi.ontology.lookup('CL:0000540');
+        %     % id = 'CL:0000540', name = 'neuron'
+        %
+        %     [id, name] = ndi.ontology.lookup('CL:neuron');
+        %     % id = 'CL:0000540', name = 'neuron'  (resolves name -> numbered node)
+        %
+        %     [id, name] = ndi.ontology.lookup('UBERON:heart');
+        %     % id = 'UBERON:0000948', name = 'heart'
+        %
+        %     [id, name] = ndi.ontology.lookup('CHEBI:15377');
+        %     % id = 'CHEBI:15377', name = 'water'
+        %
+        %     [id, name] = ndi.ontology.lookup('PATO:female');
+        %     % id = 'PATO:0000383', name = 'female'
+        %
+        %     [id, name] = ndi.ontology.lookup('EMPTY:0000002');
+        %     % id = 'EMPTY:0000002', name = 'Behavioral measurement'
+        %
+        %     % --- Term-style ontologies (OM) ---
+        %     % The node itself IS a readable term (no separate numeric code).
+        %     % The name is a normalized lowercase version of the node.
+        %
+        %     [id, name] = ndi.ontology.lookup('OM:Temperature');
+        %     % id = 'OM:Temperature', name = 'temperature'
+        %
+        %     [id, name] = ndi.ontology.lookup('OM:temperature');
+        %     % id = 'OM:Temperature', name = 'temperature'  (case is normalized)
+        %
+        %     [id, name] = ndi.ontology.lookup('OM:Acidity');
+        %     % id = 'OM:Acidity', name = 'acidity'
+        %
+        %     % --- External database lookups (PubChem, NCIm, NCBITaxon, RRID) ---
+        %     % The returned ID uses the source database's native identifier.
+        %
+        %     [id, name] = ndi.ontology.lookup('PubChem:2244');
+        %     % id = '2244', name = 'aspirin'
+        %
+        %     [id, name] = ndi.ontology.lookup('PubChem:Aspirin');
+        %     % id = '2244', name = 'aspirin'  (resolves name -> CID)
+        %
+        %     [id, name] = ndi.ontology.lookup('NCBITaxon:9606');
+        %     % id = 'NCBITaxon:9606', name = 'Homo sapiens'
+        %
+        %     [id, name] = ndi.ontology.lookup('NCIm:C0018787');
+        %     % id = 'C0018787', name = 'Heart'
+        %
+        %     [id, name] = ndi.ontology.lookup('RRID:SCR_006472');
+        %     % id = 'RRID:SCR_006472', name = 'NCBI'
+        %
+        %     % --- Local controlled vocabulary (NDIC) ---
+        %
+        %     [id, name] = ndi.ontology.lookup('NDIC:8');
+        %     % id = '8', name = 'Experienced cricket hunting'
+        %
+        %     [id, name] = ndi.ontology.lookup('NDIC:postnatal day');
+        %     % id = '11', name = 'Postnatal day'
+        %
+        %   Caching:
+        %   --------
+        %   Results are cached in memory. Subsequent lookups for the same string
+        %   return instantly. To clear the cache:
+        %     ndi.ontology.clearCache();
+        %
+        %   See also: ndi.ontology.clearCache
         %
         persistent lookupCache lookupKeys cacheSize;
 
