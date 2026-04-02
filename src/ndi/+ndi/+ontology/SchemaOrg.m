@@ -83,12 +83,12 @@ classdef SchemaOrg < ndi.ontology
             id = ['schema:' resolved_name];
 
             % --- rdfs:label (simple string or {"@value": "..."} object) ---
-            name = SchemaOrg.extractJSONField(json_str, 'rdfs:label', resolved_name);
+            name = ndi.ontology.SchemaOrg.extractJSONField(json_str, 'rdfs:label', resolved_name);
 
             % --- rdfs:comment / description ---
-            definition = SchemaOrg.extractJSONField(json_str, 'rdfs:comment', '');
+            definition = ndi.ontology.SchemaOrg.extractJSONField(json_str, 'rdfs:comment', '');
             if isempty(definition)
-                definition = SchemaOrg.extractJSONField(json_str, 'schema:description', '');
+                definition = ndi.ontology.SchemaOrg.extractJSONField(json_str, 'schema:description', '');
             end
 
             % Schema.org does not have synonyms in the standard JSON-LD output.
