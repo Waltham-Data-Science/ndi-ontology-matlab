@@ -51,7 +51,9 @@
     {"prefix": "WBStrain", "ontology_name": "WBStrain"},
     {"prefix": "EFO", "ontology_name": "EFO"},
     {"prefix": "EDAM", "ontology_name": "EDAM"},
-    {"prefix": "format", "ontology_name": "EDAM"}
+    {"prefix": "format", "ontology_name": "EDAM"},
+    {"prefix": "IAO", "ontology_name": "IAO"},
+    {"prefix": "schema", "ontology_name": "SchemaOrg"}
   ],
   "Ontologies": [
     {
@@ -134,6 +136,16 @@
       "name": "EDAM",
       "homepage": "http://edamontology.org",
       "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/edam"
+    },
+    {
+      "name": "IAO",
+      "homepage": "https://github.com/information-artifact-ontology/IAO",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/iao"
+    },
+    {
+      "name": "SchemaOrg",
+      "homepage": "https://schema.org",
+      "api_url": "https://schema.org/"
     }
   ]
 }
