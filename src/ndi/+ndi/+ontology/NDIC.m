@@ -91,13 +91,12 @@ classdef NDIC < ndi.ontology
                 fprintf('Loading NDIC ontology from file...\n');
                 ontologyFilePath = ''; % Initialize
                 try
-                    % Use constants from base class for path components
-                    ontologyFilePath = fullfile(ndi.common.PathConstants.CommonFolder,...
+                    ontologyFilePath = fullfile(ndi.ontologyToolboxDir(), 'ndi_common', ...
                         ndi.ontology.ONTOLOGY_SUBFOLDER_NDIC,...
                         ndi.ontology.NDIC_FILENAME);
                 catch ME_path
                     error('ndi:ontology:NDIC:PathConstantError', ...
-                          'Could not access ndi.common.PathConstants.CommonFolder. Ensure NDI paths are set up correctly. Original error: %s', ME_path.message);
+                          'Could not locate ontology data directory via ndi.ontologyToolboxDir(). Original error: %s', ME_path.message);
                 end
 
                 if ~isfile(ontologyFilePath) % Use isfile

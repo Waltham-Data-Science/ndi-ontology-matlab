@@ -176,7 +176,7 @@ methods (Static)
         end
 
         % 5. Create shortName and prepare result struct
-        shortName = ndi.fun.name2variableName(name);
+        shortName = ndi.ontology.name2variableName(name);
 
         newResult.id = id;
         newResult.name = name;
@@ -496,8 +496,8 @@ methods (Static, Access = private)
         if forceReload, ontologyDataCache = []; fprintf('Force reloading NDI ontology list from JSON...\n'); end
         if isempty(ontologyDataCache)
             if ~forceReload, fprintf('Loading NDI ontology list from JSON...\n'); end
-            try filePath = fullfile(ndi.common.PathConstants.CommonFolder, ndi.ontology.ONTOLOGY_SUBFOLDER_JSON, ndi.ontology.ONTOLOGY_FILENAME);
-            catch ME, error('ndi:ontology:ontology:PathConstantError', 'Could not access ndi.common.PathConstants.CommonFolder: %s', ME.message); end
+            try filePath = fullfile(ndi.ontologyToolboxDir(), 'ndi_common', ndi.ontology.ONTOLOGY_SUBFOLDER_JSON, ndi.ontology.ONTOLOGY_FILENAME);
+            catch ME, error('ndi:ontology:ontology:PathConstantError', 'Could not locate ontology data directory via ndi.ontologyToolboxDir(): %s', ME.message); end
             if ~isfile(filePath), error('ndi:ontology:ontology:JSONNotFound', 'Ontology list JSON file not found: %s', filePath); end
             try jsonData = fileread(filePath); decodedData = jsondecode(jsonData); if ~isstruct(decodedData) || ~isfield(decodedData, 'prefix_ontology_mappings') || ~isfield(decodedData, 'Ontologies'), error('ndi:ontology:ontology:JSONFormatError', 'Ontology list JSON file "%s" has an invalid format.', filePath); end; ontologyDataCache = decodedData; fprintf('NDI ontology list loaded successfully.\n');
             catch ME, ontologyDataCache = []; error('ndi:ontology:ontology:JSONError', 'Failed to load or decode ontology list JSON file "%s": %s', filePath, ME.message); end
