@@ -23,10 +23,10 @@ classdef STATO < ndi.ontology
             %   for STATO using the EBI OLS API via static helper methods.
             %
             %   The input TERM_OR_ID_OR_NAME is the part after the 'STATO:' prefix.
-            %   (e.g., '0000019' for p-value, or 'p-value' for a name search).
+            %   (e.g., '0000700' for p-value, or 'p-value' for a name search).
             %
             %   Example Usage (via dispatcher):
-            %   [id, name, ~, def] = ndi.ontology.lookup('STATO:0000019'); % p-value
+            %   [id, name, ~, def] = ndi.ontology.lookup('STATO:0000700'); % p-value
             %   [id, name, ~, def] = ndi.ontology.lookup('STATO:p-value');
 
             % Define ontology specifics for STATO
