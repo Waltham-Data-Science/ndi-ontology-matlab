@@ -433,6 +433,34 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "STATO",
+      "lookup_string": "STATO:0000700",
+      "should_succeed": true,
+      "expected_id": "STATO:0000700",
+      "expected_name": "p-value"
+    },
+    {
+      "ontology": "STATO",
+      "lookup_string": "STATO:p-value",
+      "should_succeed": true,
+      "expected_id": "STATO:0000700",
+      "expected_name": "p-value"
+    },
+    {
+      "ontology": "STATO",
+      "lookup_string": "STATO:0000019",
+      "should_succeed": true,
+      "expected_id": "STATO:0000019",
+      "expected_name": "normal distribution hypothesis"
+    },
+    {
+      "ontology": "STATO",
+      "lookup_string": "STATO:NoSuchSTATOTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
