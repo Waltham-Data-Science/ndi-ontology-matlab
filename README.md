@@ -24,6 +24,7 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `EMPTY` | [Experimental Measurements, Purposes, and Treatments ontologY](https://github.com/Waltham-Data-Science/empty-ontology) |
 | `NDIC` | NDI Controlled Vocabulary (local) |
 | `WBStrain` | [WormBase Strain Database](https://wormbase.org) |
+| `STATO` | [Statistics Ontology](http://stato-ontology.org/) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
 
@@ -130,9 +131,9 @@ src/ndi/
     ontology.m              % Base class and static dispatcher
     +ontology/              % Ontology-specific subclasses
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
-      NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m, OM.m,
-      PATO.m, PubChem.m, RRID.m, SNOMED.m,
-      Uberon.m, WBStrain.m
+      IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
+      OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m,
+      SNOMED.m, STATO.m, Uberon.m, WBStrain.m
     +common/
       PathConstants.m       % Path constants
     +fun/
