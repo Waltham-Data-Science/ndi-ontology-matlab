@@ -29,6 +29,17 @@ classdef EMPTY < ndi.ontology
 
             try
                 [id, name, definition, synonyms] = obj.performRemoteLookup(obj.OWL_URL_DEV, term_or_id_or_name_fragment);
+                % PROVENANCE: this term was NOT found in the released main-branch
+                % ontology and resolved only from the unreleased development
+                % branch. Warn so callers can refuse dev-only terms when writing
+                % documents; the term's meaning may change before release.
+                % (Whether to keep the dev failover at all is an open question
+                % for the ontology owner -- deliberately NOT removed here.)
+                warning('ndi:ontology:EMPTY:ResolvedFromDevBranch', ...
+                    ['EMPTY term "%s" was not found in the released ontology and ' ...
+                     'resolved only from the development branch (%s). Its meaning ' ...
+                     'may change before it is released.'], ...
+                    term_or_id_or_name_fragment, obj.OWL_URL_DEV);
                 return;
             catch ME
                 % If DEV branch doesn't exist (404), skip it and return original error or a clean failure.
@@ -54,10 +65,24 @@ classdef EMPTY < ndi.ontology
     methods (Access = private)
         function [id, name, definition, synonyms] = performRemoteLookup(obj, url, term_or_id_or_name_fragment)
             id = ''; name = ''; definition = ''; synonyms = {};
-            
-            options = weboptions('Timeout', 30, 'ContentType', 'text');
-            owl_content = webread(url, options);
-            
+
+            % Persistent per-URL cache of the downloaded OWL content. Without
+            % it, every not-found lookup re-downloaded the full OWL file twice
+            % (main + dev). A failed webread throws before the cache is written,
+            % so only successful downloads are cached.
+            persistent owlContentCache;
+            if isempty(owlContentCache)
+                owlContentCache = containers.Map('KeyType', 'char', 'ValueType', 'any');
+            end
+
+            if isKey(owlContentCache, url)
+                owl_content = owlContentCache(url);
+            else
+                options = weboptions('Timeout', 30, 'ContentType', 'text');
+                owl_content = webread(url, options);
+                owlContentCache(url) = owl_content;
+            end
+
             % --- DETECT FORMAT ---
             if contains(owl_content, '<?xml') || contains(owl_content, '<rdf:RDF')
                 % Use the XML Parser logic
