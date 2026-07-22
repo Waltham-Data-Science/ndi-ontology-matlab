@@ -89,10 +89,27 @@ classdef NDIC < ndi.ontology
 
     end % methods
 
+    methods (Static)
+        function clearCache()
+            % CLEARCACHE - Clear the persistent NDIC data cache.
+            %   Forces the next lookup to re-read NDIC.txt from disk. Called by
+            %   ndi.ontology.clearCache.
+            ndi.ontology.NDIC.getNDICData('clear');
+        end % function clearCache
+    end % methods (Static)
+
     methods (Static, Access = private)
         % --- Helper function to load/cache NDIC data ---
-        function ndicDataTable = getNDICData()
+        function ndicDataTable = getNDICData(action)
             persistent ndicDataCache; % Cache data within this static method
+
+            % Support a 'clear' sentinel so ndi.ontology.clearCache can flush
+            % this persistent cache (see NDIC.clearCache).
+            if nargin >= 1 && (ischar(action) || isstring(action)) && strcmpi(action, 'clear')
+                ndicDataCache = [];
+                ndicDataTable = [];
+                return;
+            end
 
             if isempty(ndicDataCache)
                 fprintf('Loading NDIC ontology from file...\n');

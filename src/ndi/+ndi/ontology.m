@@ -650,19 +650,21 @@ methods (Static)
     function clearCache()
         % CLEARCACHE - Clears all persistent caches in the ndi.ontology class.
         ndi.ontology.loadOntologyJSONData_(true); % Force reload of JSON cache
-        
-        ndicFuncName = 'ndi.ontology.lookup_NDIC';
-        ndicFuncPath = which(ndicFuncName);
-        if ~isempty(ndicFuncPath), clear(ndicFuncName); fprintf('Cleared persistent data for %s.\n', ndicFuncName);
-        else, fprintf('Function %s not found on path, skipping clear.\n', ndicFuncName); end
         fprintf('NDI ontology list JSON cache cleared.\n');
-        
-        % Clear the centralized lookup cache and the helper caches
+
+        % Clear the per-subclass persistent caches. These are the three real
+        % caches that survive a session (previously clearCache pointed at
+        % 'ndi.ontology.lookup_NDIC', which does not exist, and never cleared
+        % any of them).
+        ndi.ontology.NDIC.clearCache();
+        ndi.ontology.IAO.clearCache();
+        ndi.ontology.EDAM.clearCache();
+        fprintf('Cleared NDIC, IAO, and EDAM persistent caches.\n');
+
+        % Clear the centralized lookup cache
         ndi.ontology.lookup('clear');
         fprintf('Cleared centralized ontology lookup cache.\n');
-        ndi.ontology.lookupOBOFile('clear');
-        fprintf('Cleared OBO file data cache.\n');
-        
+
     end % function clearCache
 end % methods (Static)
 methods (Static, Access = private)
