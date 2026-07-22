@@ -83,6 +83,24 @@ classdef RRID < ndi.ontology
                             synonyms = {char(syn_data.name)};
                         end
                     end
+
+                    % Fail closed: a hit with no usable name is not a valid
+                    % resolution. Returning empty id/name as "success" would
+                    % stamp an unvalidated resource into an NDI document and
+                    % poison the session lookup cache.
+                    if isempty(name)
+                        id = ''; definition = ''; synonyms = {};
+                        scientificName = ''; commonName = '';
+                        error('ndi:ontology:RRID:NotFound', ...
+                            'RRID "%s" resolved to a record with no name.', full_rrid);
+                    end
+                else
+                    % SciCrunch returned HTTP 200 with zero hits: the RRID is
+                    % syntactically valid but unregistered. Fail closed rather
+                    % than returning empty id/name as a successful lookup (which
+                    % ndi.ontology.lookup would otherwise cache for the session).
+                    error('ndi:ontology:RRID:NotFound', ...
+                        'RRID "%s" was not found by the SciCrunch resolver.', full_rrid);
                 end
             catch ME
                 rethrow(ME);

@@ -334,17 +334,22 @@ methods (Static)
         newResult.synonyms = synonyms;
         newResult.shortName = shortName;
 
-        % Store in cache
-        lookupCache(lookupString) = newResult;
-        lookupKeys{end+1, 1} = lookupString; % Ensure it's a column vector
-        
-        % Enforce cache size limit
-        if numel(lookupKeys) > cacheSize
-            key_to_remove = lookupKeys{1};
-            remove(lookupCache, key_to_remove);
-            lookupKeys(1) = [];
+        % Store in cache. Only cache resolved results: never cache an empty
+        % id, which would pin a fail-open / empty record for the rest of the
+        % session (subclasses that fail closed now throw instead of returning
+        % empty, but this is a defense-in-depth guard for any that do not).
+        if ~isempty(id)
+            lookupCache(lookupString) = newResult;
+            lookupKeys{end+1, 1} = lookupString; % Ensure it's a column vector
+
+            % Enforce cache size limit
+            if numel(lookupKeys) > cacheSize
+                key_to_remove = lookupKeys{1};
+                remove(lookupCache, key_to_remove);
+                lookupKeys(1) = [];
+            end
         end
-        
+
     end % function lookup
     % --------------------------------------------------------------------
     % Static Helper Functions
