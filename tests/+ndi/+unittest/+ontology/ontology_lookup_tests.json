@@ -260,6 +260,20 @@
       "expected_name": "aspirin"
     },
     {
+      "ontology": "PubChem",
+      "lookup_string": "PubChem:Cidofovir",
+      "should_succeed": true,
+      "expected_id": "60613",
+      "expected_name": "cidofovir"
+    },
+    {
+      "ontology": "PubChem",
+      "lookup_string": "PubChem:cid",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "NCBITaxon",
       "lookup_string": "taxonomy:9606",
       "should_succeed": true,
