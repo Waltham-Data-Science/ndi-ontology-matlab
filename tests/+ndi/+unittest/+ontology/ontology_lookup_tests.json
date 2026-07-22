@@ -295,6 +295,20 @@
       "expected_name": ""
     },
     {
+      "ontology": "NDIC",
+      "lookup_string": "NDIC:8;NDIC:2",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NDIC",
+      "lookup_string": "NDIC:[1 2]",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "RRID",
       "lookup_string": "RRID:SCR_006472",
       "should_succeed": true,
