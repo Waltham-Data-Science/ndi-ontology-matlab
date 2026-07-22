@@ -133,12 +133,9 @@ src/ndi/
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
       OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m,
-      SNOMED.m, STATO.m, Uberon.m, WBStrain.m
-    +common/
-      PathConstants.m       % Path constants
-    +fun/
+      SNOMED.m, STATO.m, Uberon.m, WBStrain.m,
       name2variableName.m   % String utility
-    toolboxdir.m            % Toolbox root finder
+    ontologyToolboxDir.m    % Toolbox root finder
   ndi_common/
     ontology/
       ontology_list.json    % Prefix-to-class mappings
