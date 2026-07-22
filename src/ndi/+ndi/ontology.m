@@ -415,9 +415,33 @@ methods (Static)
             if isempty(likely_label), error('ndi:ontology:preprocessLookupInput:HeuristicError_OM', 'Derived empty search label from OM term component "%s".', term_component); end
             search_query = likely_label; search_field = 'label'; lookup_type_msg = sprintf('input "%s" (searching label as "%s")', original_input, likely_label);
         else % --- Standard Handling ---
-            if startsWith(processed_input, prefix_with_colon, 'IgnoreCase', true), remainder = strtrim(processed_input(numel(prefix_with_colon)+1:end)); if ~isempty(regexp(remainder, '^\d+$', 'once')), numeric_id = remainder; search_query = [ontology_prefix ':' numeric_id]; search_field = 'obo_id'; lookup_type_msg = sprintf('prefixed ID "%s"', original_input); elseif isempty(remainder), error('ndi:ontology:preprocessLookupInput:InvalidPrefixFormat', 'Input "%s" has prefix "%s" but is missing term/ID.', original_input, prefix_with_colon); else, search_query = remainder; search_field = 'label'; lookup_type_msg = sprintf('prefixed name "%s"', original_input); end
-            elseif ~isempty(regexp(processed_input, '^\d+$', 'once')), numeric_id = processed_input; search_query = [ontology_prefix ':' numeric_id]; search_field = 'obo_id'; lookup_type_msg = sprintf('numeric ID "%s"', original_input);
-            else, search_query = processed_input; search_field = 'label'; lookup_type_msg = sprintf('name "%s"', original_input); end
+            % An ontology "code" is one or more letters followed by digits (and
+            % possibly underscores), e.g. NCIT's 'C9523'. It is an identifier,
+            % not a label, and must be routed to an obo_id (prefixed, exact)
+            % search rather than a label search. Plain word labels ('cell',
+            % 'water', 'p-value', 'Person', 'NoSuchItem') have no digit suffix
+            % and are unaffected. Placing this in the shared helper lets every
+            % OLS subclass inherit the routing once (NCIT's 'C####' codes are
+            % the motivating case; see NCIT.m).
+            is_code = @(s) ~isempty(regexp(s, '^[A-Za-z]+[0-9_]+$', 'once'));
+            if startsWith(processed_input, prefix_with_colon, 'IgnoreCase', true)
+                remainder = strtrim(processed_input(numel(prefix_with_colon)+1:end));
+                if ~isempty(regexp(remainder, '^\d+$', 'once'))
+                    numeric_id = remainder; search_query = [ontology_prefix ':' numeric_id]; search_field = 'obo_id'; lookup_type_msg = sprintf('prefixed ID "%s"', original_input);
+                elseif isempty(remainder)
+                    error('ndi:ontology:preprocessLookupInput:InvalidPrefixFormat', 'Input "%s" has prefix "%s" but is missing term/ID.', original_input, prefix_with_colon);
+                elseif is_code(remainder)
+                    search_query = [ontology_prefix ':' remainder]; search_field = 'obo_id'; lookup_type_msg = sprintf('prefixed code "%s"', original_input);
+                else
+                    search_query = remainder; search_field = 'label'; lookup_type_msg = sprintf('prefixed name "%s"', original_input);
+                end
+            elseif ~isempty(regexp(processed_input, '^\d+$', 'once'))
+                numeric_id = processed_input; search_query = [ontology_prefix ':' numeric_id]; search_field = 'obo_id'; lookup_type_msg = sprintf('numeric ID "%s"', original_input);
+            elseif is_code(processed_input)
+                search_query = [ontology_prefix ':' processed_input]; search_field = 'obo_id'; lookup_type_msg = sprintf('code "%s"', original_input);
+            else
+                search_query = processed_input; search_field = 'label'; lookup_type_msg = sprintf('name "%s"', original_input);
+            end
         end
     end % function preprocessLookupInput
     function [id, name, definition, synonyms] = searchOLSAndPerformIRILookup(search_query, search_field, ontology_name_ols, ontology_prefix, lookup_type_msg)

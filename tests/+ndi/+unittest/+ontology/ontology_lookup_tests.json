@@ -204,6 +204,13 @@
       "expected_name": ""
     },
     {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C9523",
+      "should_succeed": true,
+      "expected_id": "NCIT:C9523",
+      "expected_name": "Stage I Esophageal Cancer"
+    },
+    {
       "ontology": "NCIm",
       "lookup_string": "NCIm:C0018787",
       "should_succeed": true,
