@@ -29,10 +29,17 @@ classdef NDIC < ndi.ontology
             % Initialize Outputs
             id = ''; name = ''; definition = ''; synonyms = {};
 
-            % Determine if input REMINDER looks like a numeric ID
-            [inputNum, isNumericID] = str2num(original_input_remainder);
-            % Ensure str2num succeeded and result is a scalar number
-            isNumericID = isNumericID && isscalar(inputNum);
+            % Determine if input REMAINDER looks like a numeric ID.
+            % SECURITY: do NOT use str2num here. str2num is implemented as
+            % eval(['[' s ']']), so any user-controlled lookup remainder would
+            % be executed as MATLAB code before validation. Use a strict regex
+            % guard plus str2double instead (the same pattern every other
+            % subclass in this repo already uses, e.g. NCBITaxon.m).
+            isNumericID = ~isempty(regexp(original_input_remainder, '^\d+$', 'once'));
+            inputNum = [];
+            if isNumericID
+                inputNum = str2double(original_input_remainder);
+            end
 
             % --- Perform Lookup ---
             rowIndex = [];
@@ -82,10 +89,27 @@ classdef NDIC < ndi.ontology
 
     end % methods
 
+    methods (Static)
+        function clearCache()
+            % CLEARCACHE - Clear the persistent NDIC data cache.
+            %   Forces the next lookup to re-read NDIC.txt from disk. Called by
+            %   ndi.ontology.clearCache.
+            ndi.ontology.NDIC.getNDICData('clear');
+        end % function clearCache
+    end % methods (Static)
+
     methods (Static, Access = private)
         % --- Helper function to load/cache NDIC data ---
-        function ndicDataTable = getNDICData()
+        function ndicDataTable = getNDICData(action)
             persistent ndicDataCache; % Cache data within this static method
+
+            % Support a 'clear' sentinel so ndi.ontology.clearCache can flush
+            % this persistent cache (see NDIC.clearCache).
+            if nargin >= 1 && (ischar(action) || isstring(action)) && strcmpi(action, 'clear')
+                ndicDataCache = [];
+                ndicDataTable = [];
+                return;
+            end
 
             if isempty(ndicDataCache)
                 fprintf('Loading NDIC ontology from file...\n');

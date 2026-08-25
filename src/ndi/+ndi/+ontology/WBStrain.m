@@ -61,7 +61,13 @@ classdef WBStrain < ndi.ontology
                 error('Could not determine a valid WBStrain ID for lookup from input "%s".', term_or_id_or_name);
             end
             % --- Step 2: Use the resolved full_id to fetch details from the API ---
-            api_base_url = 'http://rest.wormbase.org/rest/widget/strain/';
+            % SECURITY: fetch over TLS. rest.wormbase.org serves https, and
+            % the strain name/genotype/synonyms returned here are written
+            % verbatim into NDI subject documents; plaintext http exposes an
+            % on-path attacker (captive portal / transparent proxy) the ability
+            % to tamper with that metadata undetected. Every other endpoint in
+            % this repo already uses https.
+            api_base_url = 'https://rest.wormbase.org/rest/widget/strain/';
             options = weboptions('Timeout', 30, 'ContentType', 'json');
             
             try

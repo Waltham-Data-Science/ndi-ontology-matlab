@@ -29,28 +29,23 @@ classdef PubChem < ndi.ontology
             name_to_lookup = '';
             is_lookup_by_cid = false;
 
-            % Check for 'cid' prefix (case-insensitive) at the beginning of the remainder
-            if startsWith(processed_input, 'cid', 'IgnoreCase', true)
-                remainder_after_cid = strtrim(processed_input(4:end)); % Get part after 'cid'
-                % Check if remainder is purely numeric
-                if ~isempty(regexp(remainder_after_cid, '^\d+$', 'once'))
-                    cid_to_lookup = remainder_after_cid;
-                    is_lookup_by_cid = true;
-                else
-                    % Starts with 'cid' but not followed by numbers - invalid format
-                    error('ndi:ontology:PubChem:InvalidCidPrefixFormat', ...
-                          'Input remainder "%s" starts with "cid" but is not followed by a valid numeric ID.', original_input_remainder);
-                end
+            % Detect the 'cid NNNN' shorthand: the token 'cid' followed by a
+            % separator (whitespace, ':', '_' or '-') and digits, e.g.
+            % 'cid 2244' or 'cid:2244'. A real compound name that merely begins
+            % with the letters c-i-d (e.g. 'Cidofovir') is NOT a CID shorthand
+            % and must fall through to the name search.
+            cid_shorthand = ndi.ontology.PubChem.matchCidShorthand(processed_input);
+            if ~isempty(cid_shorthand)
+                cid_to_lookup = cid_shorthand;
+                is_lookup_by_cid = true;
+            elseif ~isempty(regexp(processed_input, '^\d+$', 'once'))
+                % Whole remainder is purely numeric -> a bare CID.
+                cid_to_lookup = processed_input;
+                is_lookup_by_cid = true;
             else
-                % No 'cid' prefix, check if the whole remainder is purely numeric
-                if ~isempty(regexp(processed_input, '^\d+$', 'once'))
-                    cid_to_lookup = processed_input;
-                    is_lookup_by_cid = true;
-                else
-                    % Not prefixed with 'cid' and not purely numeric -> treat as name
-                    name_to_lookup = processed_input;
-                    is_lookup_by_cid = false;
-                end
+                % Not a CID shorthand and not purely numeric -> treat as a name.
+                name_to_lookup = processed_input;
+                is_lookup_by_cid = false;
             end
 
             % --- Proceed based on lookup type ---
@@ -134,19 +129,50 @@ classdef PubChem < ndi.ontology
 
     end % methods
 
+    methods (Static)
+        function cid = matchCidShorthand(input)
+            % MATCHCIDSHORTHAND - Extract the CID from a 'cid<sep>NNNN' shorthand.
+            %
+            %   CID = ndi.ontology.PubChem.matchCidShorthand(INPUT)
+            %
+            %   Returns the numeric CID string if INPUT is the 'cid' shorthand
+            %   ('cid' followed by whitespace/':'/'_'/'-' and then digits, e.g.
+            %   'cid 2244', 'cid:2244'), otherwise returns ''. A real compound
+            %   name that merely begins with the letters c-i-d (e.g.
+            %   'Cidofovir') returns '' so the caller falls through to a name
+            %   search. Exposed publicly so it can be unit-tested offline.
+            tok = regexp(strtrim(input), '^cid[\s:_-]+(\d+)$', 'tokens', 'once', 'ignorecase');
+            if isempty(tok)
+                cid = '';
+            else
+                cid = tok{1};
+            end
+        end % function matchCidShorthand
+    end % methods (Static)
+
     methods (Static, Access = private)
         % --- Helper function for the actual PubChem CID Lookup via PUG REST ---
          function [id, name, definition, synonyms] = performPubChemCidLookup(cid)
             % PERFORMPUBCHEMCIDLOOKUP - Helper to fetch PubChem details by CID.
              arguments, cid (1,:) char {mustBeNonempty}, end
              id = ''; name = ''; definition = ''; synonyms = {}; pug_rest_base = 'https://pubchem.ncbi.nlm.nih.gov/rest/pug'; fetchOptions = weboptions('Timeout', 30, 'ContentType', 'json', 'HeaderFields', {'Accept', 'application/json'}); api_error_occurred = false; name_url = [pug_rest_base, '/compound/cid/', cid, '/property/Title/JSON'];
-             try name_response = webread(name_url, fetchOptions); if isstruct(name_response) && isfield(name_response, 'PropertyTable') && isfield(name_response.PropertyTable, 'Properties') && ~isempty(name_response.PropertyTable.Properties) && isfield(name_response.PropertyTable.Properties(1), 'Title'), name = char(name_response.PropertyTable.Properties(1).Title); else, name = ''; end; catch ME, warning('ndi:ontology:lookup_PubChem:NameFetchWarn','Could not fetch Title for CID %s: %s', cid, ME.message); name = ''; if contains(ME.identifier, 'MATLAB:webservices:HTTP') && contains(ME.message, '404'), api_error_occurred = true; end; end
+             try name_response = webread(name_url, fetchOptions); if isstruct(name_response) && isfield(name_response, 'PropertyTable') && isfield(name_response.PropertyTable, 'Properties') && ~isempty(name_response.PropertyTable.Properties) && isfield(name_response.PropertyTable.Properties(1), 'Title'), name = char(name_response.PropertyTable.Properties(1).Title); else, name = ''; end; catch ME, warning('ndi:ontology:lookup_PubChem:NameFetchWarn','Could not fetch Title for CID %s: %s', cid, ME.message); name = ''; api_error_occurred = true; end
              desc_url = [pug_rest_base, '/compound/cid/', cid, '/description/JSON'];
-             try desc_response = webread(desc_url, fetchOptions); if isstruct(desc_response) && isfield(desc_response, 'InformationList') && isfield(desc_response.InformationList, 'Information') && ~isempty(desc_response.InformationList.Information) && isfield(desc_response.InformationList.Information(1), 'Description'), definition = char(desc_response.InformationList.Information(1).Description); else, definition = ''; end; catch ME, warning('ndi:ontology:lookup_PubChem:DescriptionFetchWarn','Could not fetch description for CID %s: %s', cid, ME.message); definition = ''; if contains(ME.identifier, 'MATLAB:webservices:HTTP') && contains(ME.message, '404'), api_error_occurred = true; end; end
+             try desc_response = webread(desc_url, fetchOptions); if isstruct(desc_response) && isfield(desc_response, 'InformationList') && isfield(desc_response.InformationList, 'Information') && ~isempty(desc_response.InformationList.Information) && isfield(desc_response.InformationList.Information(1), 'Description'), definition = char(desc_response.InformationList.Information(1).Description); else, definition = ''; end; catch ME, warning('ndi:ontology:lookup_PubChem:DescriptionFetchWarn','Could not fetch description for CID %s: %s', cid, ME.message); definition = ''; api_error_occurred = true; end
              syn_url = [pug_rest_base, '/compound/cid/', cid, '/synonyms/JSON'];
-             try syn_response = webread(syn_url, fetchOptions); if isstruct(syn_response) && isfield(syn_response, 'InformationList') && isfield(syn_response.InformationList, 'Information') && ~isempty(syn_response.InformationList.Information) && isfield(syn_response.InformationList.Information(1), 'Synonym'), syn_list_raw = syn_response.InformationList.Information(1).Synonym; if iscell(syn_list_raw), synonyms = cellfun(@char, syn_list_raw, 'UniformOutput', false); synonyms = synonyms(~cellfun('isempty', synonyms)); if isempty(synonyms), synonyms = {}; end; elseif ischar(syn_list_raw) || isstring(syn_list_raw), synonyms = {char(syn_list_raw)}; else, synonyms = {}; end; else, synonyms = {}; end; catch ME, warning('ndi:ontology:lookup_PubChem:SynonymFetchWarn','Could not fetch synonyms for CID %s: %s', cid, ME.message); synonyms = {}; if contains(ME.identifier, 'MATLAB:webservices:HTTP') && contains(ME.message, '404'), api_error_occurred = true; end; end
-             id = char(cid); if isempty(name) && ~isempty(synonyms), name = synonyms{1}; warning('ndi:ontology:lookup_PubChem:NameFromSynonym','Title not found for CID %s. Using first synonym "%s".', cid, name); elseif isempty(name), warning('ndi:ontology:lookup_PubChem:NameNotFoundWarn','Could not determine name for CID %s.', cid); end
-             if api_error_occurred && isempty(name) && isempty(definition) && isempty(synonyms), error('ndi:ontology:lookup_PubChem:IDNotFound', 'Could not retrieve any data for PubChem CID %s.', cid); elseif isempty(name) && isempty(definition) && isempty(synonyms), warning('ndi:ontology:lookup_PubChem:LookupDataMissing','No name, description, or synonyms found for CID %s.', cid); end
+             try syn_response = webread(syn_url, fetchOptions); if isstruct(syn_response) && isfield(syn_response, 'InformationList') && isfield(syn_response.InformationList, 'Information') && ~isempty(syn_response.InformationList.Information) && isfield(syn_response.InformationList.Information(1), 'Synonym'), syn_list_raw = syn_response.InformationList.Information(1).Synonym; if iscell(syn_list_raw), synonyms = cellfun(@char, syn_list_raw, 'UniformOutput', false); synonyms = synonyms(~cellfun('isempty', synonyms)); if isempty(synonyms), synonyms = {}; end; elseif ischar(syn_list_raw) || isstring(syn_list_raw), synonyms = {char(syn_list_raw)}; else, synonyms = {}; end; else, synonyms = {}; end; catch ME, warning('ndi:ontology:lookup_PubChem:SynonymFetchWarn','Could not fetch synonyms for CID %s: %s', cid, ME.message); synonyms = {}; api_error_occurred = true; end
+             id = char(cid); if isempty(name) && ~isempty(synonyms), name = synonyms{1}; warning('ndi:ontology:lookup_PubChem:NameFromSynonym','Title not found for CID %s. Using first synonym "%s".', cid, name); end
+             % A lookup that produced no name must NOT be reported as success.
+             % Any fetch failure (404, 503, timeout, DNS) now sets
+             % api_error_occurred in every catch above, so a transient PUG REST
+             % outage errors here instead of caching {id:cid, name:''}.
+             if isempty(name)
+                 if api_error_occurred
+                     error('ndi:ontology:lookup_PubChem:IDNotFound', 'Could not retrieve data for PubChem CID %s (a PUG REST request failed).', cid);
+                 else
+                     error('ndi:ontology:lookup_PubChem:IDNotFound', 'Could not determine a name for PubChem CID %s.', cid);
+                 end
+             end
          end
 
     end % methods (Static, Access = private)

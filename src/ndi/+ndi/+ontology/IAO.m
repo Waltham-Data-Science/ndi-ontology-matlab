@@ -63,13 +63,31 @@ classdef IAO < ndi.ontology
 
     end % methods
 
+    methods (Static)
+        function clearCache()
+            % CLEARCACHE - Clear the persistent IAO term maps.
+            %   Forces the next lookup to re-download and re-parse the IAO OWL
+            %   file. Called by ndi.ontology.clearCache.
+            ndi.ontology.IAO.getTermMaps('clear');
+        end % function clearCache
+    end % methods (Static)
+
     methods (Static, Access = private)
 
-        function [by_id, by_name] = getTermMaps()
+        function [by_id, by_name] = getTermMaps(action)
             % GETTTERMMAPS - Return (and build if necessary) the persistent term maps.
             %   BY_ID  : containers.Map  IAO:NNNNNN  → term struct
             %   BY_NAME: containers.Map  lower(label) → term struct
             persistent cached_by_id cached_by_name;
+
+            % Support a 'clear' sentinel so ndi.ontology.clearCache can flush
+            % these persistent maps (see IAO.clearCache).
+            if nargin >= 1 && (ischar(action) || isstring(action)) && strcmpi(action, 'clear')
+                cached_by_id = [];
+                cached_by_name = [];
+                by_id = []; by_name = [];
+                return;
+            end
 
             if ~isempty(cached_by_id)
                 by_id   = cached_by_id;

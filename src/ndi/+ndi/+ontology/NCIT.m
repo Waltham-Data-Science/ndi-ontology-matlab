@@ -55,10 +55,16 @@ classdef NCIT < ndi.ontology
             % searchOLSAndPerformIRILookup will use 'exact=true' for 'obo_id' searches
             % and its existing logic for 'label' searches (broad search then filter for exact match).
             try
-                % Call static method using full class name qualification
+                % Pass search_query and search_field through unchanged, exactly
+                % as every other OLS subclass does (CL.m:50-51). The previous
+                % code discarded search_field, forced 'obo_id', and prepended
+                % 'NCIT:' -- so 'NCIT:Neoplasm' queried obo_id='NCIT:Neoplasm'
+                % (0 results) and 'NCIT:12345' became 'NCIT:NCIT:12345'. The
+                % id-vs-label routing (incl. 'C####' codes) now lives in the
+                % shared preprocessLookupInput.
                 [id, name, definition, synonyms] = ...
                     ndi.ontology.searchOLSAndPerformIRILookup(...
-                        ['NCIT:',search_query], 'obo_id', ontology_name_ols, ontology_prefix, lookup_type_msg);
+                        search_query, search_field, ontology_name_ols, ontology_prefix, lookup_type_msg);
             catch ME
                 baseME = MException('ndi:ontology:NCIT:LookupFailed', ...
                     'NCIT lookup failed for %s.', lookup_type_msg);

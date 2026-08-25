@@ -5,463 +5,568 @@
       "lookup_string": "NCBITaxon:9606",
       "should_succeed": true,
       "expected_id": "NCBITaxon:9606",
-      "expected_name": "Homo sapiens"
+      "expected_name": "Homo sapiens",
+      "expected_error_id": ""
     },
     {
       "ontology": "CL",
       "lookup_string": "CL:0000000",
       "should_succeed": true,
       "expected_id": "CL:0000000",
-      "expected_name": "cell"
+      "expected_name": "cell",
+      "expected_error_id": ""
     },
     {
       "ontology": "CL",
       "lookup_string": "CL:cell",
       "should_succeed": true,
       "expected_id": "CL:0000000",
-      "expected_name": "cell"
+      "expected_name": "cell",
+      "expected_error_id": ""
     },
     {
       "ontology": "CL",
       "lookup_string": "CL:NoSuchItem",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "CL",
       "lookup_string": "CL:0000540",
       "should_succeed": true,
       "expected_id": "CL:0000540",
-      "expected_name": "neuron"
+      "expected_name": "neuron",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:Temperature",
       "should_succeed": true,
       "expected_id": "OM:Temperature",
-      "expected_name": "temperature"
+      "expected_name": "temperature",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:temperature",
       "should_succeed": true,
       "expected_id": "OM:Temperature",
-      "expected_name": "temperature"
+      "expected_name": "temperature",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:Acidity",
       "should_succeed": true,
       "expected_id": "OM:Acidity",
-      "expected_name": "acidity"
+      "expected_name": "acidity",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:acidity",
       "should_succeed": true,
       "expected_id": "OM:Acidity",
-      "expected_name": "acidity"
+      "expected_name": "acidity",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:Period",
       "should_succeed": true,
       "expected_id": "OM:Period",
-      "expected_name": "period"
+      "expected_name": "period",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:NoSuchUnit",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "OM:182",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "OM",
       "lookup_string": "275",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "CHEBI",
       "lookup_string": "CHEBI:15377",
       "should_succeed": true,
       "expected_id": "CHEBI:15377",
-      "expected_name": "water"
+      "expected_name": "water",
+      "expected_error_id": ""
     },
     {
       "ontology": "CHEBI",
       "lookup_string": "CHEBI:water",
       "should_succeed": true,
       "expected_id": "CHEBI:15377",
-      "expected_name": "water"
+      "expected_name": "water",
+      "expected_error_id": ""
     },
     {
       "ontology": "CHEBI",
       "lookup_string": "CHEBI:NoSuchItem",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "CHEBI",
       "lookup_string": "CHEBI:16236",
       "should_succeed": true,
       "expected_id": "CHEBI:16236",
-      "expected_name": "ethanol"
+      "expected_name": "ethanol",
+      "expected_error_id": ""
     },
     {
       "ontology": "UBERON",
       "lookup_string": "UBERON:0000948",
       "should_succeed": true,
       "expected_id": "UBERON:0000948",
-      "expected_name": "heart"
+      "expected_name": "heart",
+      "expected_error_id": ""
     },
     {
       "ontology": "UBERON",
       "lookup_string": "UBERON:heart",
       "should_succeed": true,
       "expected_id": "UBERON:0000948",
-      "expected_name": "heart"
+      "expected_name": "heart",
+      "expected_error_id": ""
     },
     {
       "ontology": "UBERON",
       "lookup_string": "UBERON:NoSuchItem",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "UBERON",
       "lookup_string": "UBERON:0002107",
       "should_succeed": true,
       "expected_id": "UBERON:0002107",
-      "expected_name": "liver"
+      "expected_name": "liver",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:0000384",
       "should_succeed": true,
       "expected_id": "PATO:0000384",
-      "expected_name": "male"
+      "expected_name": "male",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:male",
       "should_succeed": true,
       "expected_id": "PATO:0000384",
-      "expected_name": "male"
+      "expected_name": "male",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:0000383",
       "should_succeed": true,
       "expected_id": "PATO:0000383",
-      "expected_name": "female"
+      "expected_name": "female",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:female",
       "should_succeed": true,
       "expected_id": "PATO:0000383",
-      "expected_name": "female"
+      "expected_name": "female",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:nosuchthing",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "PATO",
       "lookup_string": "PATO:9999999",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCBITaxon",
       "lookup_string": "NCBITaxon:Homo sapiens",
       "should_succeed": true,
       "expected_id": "NCBITaxon:9606",
-      "expected_name": "Homo sapiens"
+      "expected_name": "Homo sapiens",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCBITaxon",
       "lookup_string": "NCBITaxon:999999999",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C9523",
+      "should_succeed": true,
+      "expected_id": "NCIT:C9523",
+      "expected_name": "BCD Regimen",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCIm",
       "lookup_string": "NCIm:C0018787",
       "should_succeed": true,
       "expected_id": "C0018787",
-      "expected_name": "Heart"
+      "expected_name": "Heart",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCIm",
       "lookup_string": "NCIm:Infectious Disorder",
       "should_succeed": true,
       "expected_id": "C0009450",
-      "expected_name": "Infectious Disorder"
+      "expected_name": "Infectious Disorder",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCIm",
       "lookup_string": "NCIm:C9999999",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCIm",
       "lookup_string": "NCIm:C0009450",
       "should_succeed": true,
       "expected_id": "C0009450",
-      "expected_name": "Infectious Disorder"
+      "expected_name": "Infectious Disorder",
+      "expected_error_id": ""
     },
     {
       "ontology": "PubChem",
       "lookup_string": "PubChem:2244",
       "should_succeed": true,
       "expected_id": "2244",
-      "expected_name": "aspirin"
+      "expected_name": "aspirin",
+      "expected_error_id": ""
     },
     {
       "ontology": "PubChem",
       "lookup_string": "PubChem:Aspirin",
       "should_succeed": true,
       "expected_id": "2244",
-      "expected_name": "aspirin"
+      "expected_name": "aspirin",
+      "expected_error_id": ""
     },
     {
       "ontology": "PubChem",
       "lookup_string": "PubChem:NoSuchCompound",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "PubChem",
       "lookup_string": "PubChem:cid 2244",
       "should_succeed": true,
       "expected_id": "2244",
-      "expected_name": "aspirin"
+      "expected_name": "aspirin",
+      "expected_error_id": ""
+    },
+    {
+      "ontology": "PubChem",
+      "lookup_string": "PubChem:Cidofovir",
+      "should_succeed": true,
+      "expected_id": "60613",
+      "expected_name": "cidofovir",
+      "expected_error_id": ""
+    },
+    {
+      "ontology": "PubChem",
+      "lookup_string": "PubChem:cid",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "NCBITaxon",
       "lookup_string": "taxonomy:9606",
       "should_succeed": true,
       "expected_id": "NCBITaxon:9606",
-      "expected_name": "Homo sapiens"
+      "expected_name": "Homo sapiens",
+      "expected_error_id": ""
     },
     {
       "ontology": "NDIC",
       "lookup_string": "NDIC:8",
       "should_succeed": true,
       "expected_id": "8",
-      "expected_name": "Experienced cricket hunting"
+      "expected_name": "Experienced cricket hunting",
+      "expected_error_id": ""
     },
     {
       "ontology": "NDIC",
       "lookup_string": "NDIC:postnatal day",
       "should_succeed": true,
       "expected_id": "11",
-      "expected_name": "Postnatal day"
+      "expected_name": "Postnatal day",
+      "expected_error_id": ""
     },
     {
       "ontology": "NDIC",
       "lookup_string": "NDIC:9999",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": "ndi:ontology:NDIC:IDNotFound"
     },
     {
       "ontology": "NDIC",
       "lookup_string": "NDIC:No such purpose here",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": "ndi:ontology:NDIC:NameNotFound"
+    },
+    {
+      "ontology": "NDIC",
+      "lookup_string": "NDIC:8;NDIC:2",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": "",
+      "expected_error_id": "ndi:ontology:NDIC:NameNotFound"
+    },
+    {
+      "ontology": "NDIC",
+      "lookup_string": "NDIC:[1 2]",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": "",
+      "expected_error_id": "ndi:ontology:NDIC:NameNotFound"
     },
     {
       "ontology": "RRID",
       "lookup_string": "RRID:SCR_006472",
       "should_succeed": true,
       "expected_id": "RRID:SCR_006472",
-      "expected_name": "NCBI"
+      "expected_name": "NCBI",
+      "expected_error_id": ""
     },
     {
       "ontology": "RRID",
       "lookup_string": "RRID:RGD_70508",
       "should_succeed": true,
       "expected_id": "RRID:RGD_70508",
-      "expected_name": "SD"
+      "expected_name": "SD",
+      "expected_error_id": ""
     },
     {
       "ontology": "RRID",
       "lookup_string": "RRID:NoSuchRID_000",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:0000002",
       "should_succeed": true,
       "expected_id": "EMPTY:0000002",
-      "expected_name": "Behavioral measurement"
+      "expected_name": "Behavioral measurement",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:Behavioral measurement",
       "should_succeed": true,
       "expected_id": "EMPTY:0000002",
-      "expected_name": "Behavioral measurement"
+      "expected_name": "Behavioral measurement",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:0000006",
       "should_succeed": true,
       "expected_id": "EMPTY:0000006",
-      "expected_name": "Elevated Plus Maze: open arm (north) - entries"
+      "expected_name": "Elevated Plus Maze: open arm (north) - entries",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:NoSuchTermHere",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:99999999",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "EMPTY",
       "lookup_string": "EMPTY:0000000",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "EDAM",
       "lookup_string": "EDAM:1929",
       "should_succeed": true,
       "expected_id": "EDAM:1929",
-      "expected_name": "FASTA"
+      "expected_name": "FASTA",
+      "expected_error_id": ""
     },
     {
       "ontology": "IAO",
       "lookup_string": "IAO:0000310",
       "should_succeed": true,
       "expected_id": "IAO:0000310",
-      "expected_name": "document"
+      "expected_name": "document",
+      "expected_error_id": ""
     },
     {
       "ontology": "EDAM",
       "lookup_string": "format:1929",
       "should_succeed": true,
       "expected_id": "EDAM:1929",
-      "expected_name": "FASTA"
+      "expected_name": "FASTA",
+      "expected_error_id": ""
     },
     {
       "ontology": "schema",
       "lookup_string": "schema:Person",
       "should_succeed": true,
       "expected_id": "schema:Person",
-      "expected_name": "Person"
+      "expected_name": "Person",
+      "expected_error_id": ""
     },
     {
       "ontology": "EDAM",
       "lookup_string": "format:FASTA",
       "should_succeed": true,
       "expected_id": "EDAM:1929",
-      "expected_name": "FASTA"
+      "expected_name": "FASTA",
+      "expected_error_id": ""
     },
     {
       "ontology": "IAO",
       "lookup_string": "IAO:document",
       "should_succeed": true,
       "expected_id": "IAO:0000310",
-      "expected_name": "document"
+      "expected_name": "document",
+      "expected_error_id": ""
     },
     {
       "ontology": "schema",
       "lookup_string": "schema:Dataset",
       "should_succeed": true,
       "expected_id": "schema:Dataset",
-      "expected_name": "Dataset"
+      "expected_name": "Dataset",
+      "expected_error_id": ""
     },
     {
       "ontology": "IAO",
       "lookup_string": "IAO:0000030",
       "should_succeed": true,
       "expected_id": "IAO:0000030",
-      "expected_name": "information content entity"
+      "expected_name": "information content entity",
+      "expected_error_id": ""
     },
     {
       "ontology": "schema",
       "lookup_string": "schema:Organization",
       "should_succeed": true,
       "expected_id": "schema:Organization",
-      "expected_name": "Organization"
+      "expected_name": "Organization",
+      "expected_error_id": ""
     },
     {
       "ontology": "IAO",
       "lookup_string": "IAO:NoSuchItem",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "schema",
       "lookup_string": "schema:NoSuchSchemaOrgTerm",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     },
     {
       "ontology": "STATO",
       "lookup_string": "STATO:0000700",
       "should_succeed": true,
       "expected_id": "STATO:0000700",
-      "expected_name": "p-value"
+      "expected_name": "p-value",
+      "expected_error_id": ""
     },
     {
       "ontology": "STATO",
       "lookup_string": "STATO:p-value",
       "should_succeed": true,
       "expected_id": "STATO:0000700",
-      "expected_name": "p-value"
+      "expected_name": "p-value",
+      "expected_error_id": ""
     },
     {
       "ontology": "STATO",
       "lookup_string": "STATO:0000019",
       "should_succeed": true,
       "expected_id": "STATO:0000019",
-      "expected_name": "normal distribution hypothesis"
+      "expected_name": "normal distribution hypothesis",
+      "expected_error_id": ""
     },
     {
       "ontology": "STATO",
       "lookup_string": "STATO:NoSuchSTATOTerm",
       "should_succeed": false,
       "expected_id": "",
-      "expected_name": ""
+      "expected_name": "",
+      "expected_error_id": ""
     }
   ]
 }
-

@@ -62,13 +62,19 @@ classdef NCBITaxon < ndi.ontology
                 try
                     % Perform E-utilities search
                     xml_response = webread(search_url, searchOptions);
-                    id_matches = regexp(xml_response, '<IdList>.*?<Id>(\d+)</Id>.*?</IdList>', 'tokens');
+                    % Two-stage parse: isolate the <IdList> block, then count
+                    % every <Id> inside it. The previous single greedy regex
+                    % '<IdList>.*?<Id>(\d+)</Id>.*?</IdList>' consumed the whole
+                    % block in one match, so numFound was always 1 and the
+                    % NameNotUnique guard below was dead code -- an ambiguous
+                    % genus silently resolved to the first species.
+                    id_list = ndi.ontology.NCBITaxon.parseTaxIdList(xml_response);
 
                     % Check search results
-                    if ~isempty(id_matches)
-                         numFound = numel(id_matches);
+                    if ~isempty(id_list)
+                         numFound = numel(id_list);
                          if numFound == 1
-                             taxid_from_search = id_matches{1}{1};
+                             taxid_from_search = id_list{1};
                          else
                              error('ndi:ontology:NCBITaxon:NameNotUnique', ...
                                   'Scientific name "%s" matched multiple (%d) TaxIDs. Requires unique exact match.', scientific_name, numFound);
@@ -83,8 +89,19 @@ classdef NCBITaxon < ndi.ontology
                          end
                     end
                 catch ME
-                     baseME = MException('ndi:ontology:NCBITaxon:SearchAPIError', 'E-utilities esearch failed for name "%s".', scientific_name);
-                     baseME = addCause(baseME, ME); throw(baseME);
+                     % Preserve the diagnostic identifiers raised above; only
+                     % genuinely unexpected failures (e.g. a webread error) get
+                     % re-wrapped as SearchAPIError. Re-wrapping NameNotUnique
+                     % would erase the identifier a caller/test needs to pin.
+                     if any(strcmp(ME.identifier, { ...
+                             'ndi:ontology:NCBITaxon:NameNotUnique', ...
+                             'ndi:ontology:NCBITaxon:NameNotFound', ...
+                             'ndi:ontology:NCBITaxon:InvalidSearchResponse'}))
+                         rethrow(ME);
+                     else
+                         baseME = MException('ndi:ontology:NCBITaxon:SearchAPIError', 'E-utilities esearch failed for name "%s".', scientific_name);
+                         baseME = addCause(baseME, ME); throw(baseME);
+                     end
                 end
 
                 % --- If unique match found, perform ID lookup ---
@@ -109,6 +126,30 @@ classdef NCBITaxon < ndi.ontology
         end % function lookupTermOrID
 
     end % methods
+
+    methods (Static)
+        function id_list = parseTaxIdList(xml_response)
+            % PARSETAXIDLIST - Extract every TaxID in an esearch <IdList>.
+            %
+            %   ID_LIST = ndi.ontology.NCBITaxon.parseTaxIdList(XML_RESPONSE)
+            %
+            %   Isolates the <IdList>...</IdList> block, then returns a cell
+            %   array of the numeric strings inside each <Id>...</Id>. Returns
+            %   an empty cell if there is no IdList or it contains no Ids.
+            %   Exposed publicly so the multi-match parsing can be unit-tested
+            %   offline against literal XML.
+            id_list = {};
+            idlist_block = regexp(xml_response, '(?s)<IdList>(.*?)</IdList>', 'tokens', 'once');
+            if isempty(idlist_block)
+                return;
+            end
+            id_tokens = regexp(idlist_block{1}, '<Id>(\d+)</Id>', 'tokens');
+            if isempty(id_tokens)
+                return;
+            end
+            id_list = cellfun(@(x) x{1}, id_tokens, 'UniformOutput', false);
+        end % function parseTaxIdList
+    end % methods (Static)
 
     methods (Static, Access = private)
         % --- Helper function for the actual NCBI Taxonomy ID Lookup via efetch ---

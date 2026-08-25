@@ -37,6 +37,10 @@ classdef TestOntologyLookup < matlab.unittest.TestCase
             shouldSucceed = testCases.should_succeed;
             expectedID = testCases.expected_id;
             expectedName = testCases.expected_name;
+            expectedErrorId = '';
+            if isfield(testCases, 'expected_error_id')
+                expectedErrorId = testCases.expected_error_id;
+            end
 
             % Create function handle for the call we want to test
             funcToTest = @() ndi.ontology.lookup(lookupStr);
@@ -45,42 +49,84 @@ classdef TestOntologyLookup < matlab.unittest.TestCase
                 % Test Case: Expected to Succeed
                 testCase.log(matlab.unittest.Verbosity.Detailed, sprintf('Testing SUCCESS case: "%s"', lookupStr));
 
-                % Verify it runs without error and capture outputs
-                try
-                    [id, name, ~, ~, ~] = funcToTest(); % Capture actual results
+                % Call directly (no try/catch). An unexpected exception must
+                % surface with its full stack rather than being flattened into
+                % a generic verifyFail message.
+                [id, name, ~, ~, ~] = funcToTest();
 
-                    % Verify ID matches expected ID
-                    testCase.verifyEqual(id, expectedID, ...
-                        sprintf('ID mismatch for successful lookup of "%s". Expected "%s", Got "%s".', ...
-                                lookupStr, expectedID, id));
+                % Verify ID matches expected ID
+                testCase.verifyEqual(id, expectedID, ...
+                    sprintf('ID mismatch for successful lookup of "%s". Expected "%s", Got "%s".', ...
+                            lookupStr, expectedID, id));
 
-                    % --- Modified Name Verification ---
-                    % Verify Name matches expected Name (ignore case) manually
-                    actualName = name; % Get the actual name
-                    areNamesEqual = strcmpi(actualName, expectedName); % Perform case-insensitive compare
-                    testCase.verifyTrue(areNamesEqual, ... % Verify the logical result is true
-                        sprintf('Name mismatch for successful lookup of "%s". Expected "%s" (ignoring case), Got "%s".', ...
-                                lookupStr, expectedName, actualName));
-                    % --- End of Modified Name Verification ---
+                % Verify Name matches expected Name (case-insensitive)
+                testCase.verifyTrue(strcmpi(name, expectedName), ...
+                    sprintf('Name mismatch for successful lookup of "%s". Expected "%s" (ignoring case), Got "%s".', ...
+                            lookupStr, expectedName, name));
 
-                catch ME
-                    % If an unexpected error occurs during a success case, fail the test
-                    testCase.verifyFail(sprintf('Expected success for "%s", but got an error: %s (%s)', ...
-                                               lookupStr, ME.message, ME.identifier));
-                end
+                % Fail-open guard: a lookup reported as successful MUST return a
+                % non-empty id and name. This catches the fail-open bugs where a
+                % lookup returned empty outputs with no exception.
+                testCase.verifyNotEmpty(id, ...
+                    sprintf('Successful lookup of "%s" returned an empty id (fail-open).', lookupStr));
+                testCase.verifyNotEmpty(name, ...
+                    sprintf('Successful lookup of "%s" returned an empty name (fail-open).', lookupStr));
 
             else
                 % Test Case: Expected to Fail (throw an error)
                 testCase.log(matlab.unittest.Verbosity.Detailed, sprintf('Testing FAILURE case: "%s"', lookupStr));
 
-                % Verify that calling the function throws any MException
-                testCase.verifyError(funcToTest, ?MException, ...
+                caughtME = [];
+                try
+                    funcToTest();
+                catch ME
+                    caughtME = ME;
+                end
+
+                % Must have thrown something.
+                testCase.verifyNotEmpty(caughtME, ...
                     sprintf('Expected an error for lookup of "%s", but none occurred.', lookupStr));
+
+                % When a specific error identifier is pinned, require it to be
+                % present in the thrown exception or anywhere in its cause chain.
+                % ndi.ontology.lookup re-wraps subclass errors as
+                % 'ndi:ontology:lookup:SpecificLookupError' (adding the original
+                % as a cause), so a plain identifier check on the top-level
+                % exception is not enough -- and an offline connection failure
+                % must NOT satisfy a pinned not-found identifier.
+                if ~isempty(caughtME) && ~isempty(expectedErrorId)
+                    hasId = ndi.unittest.ontology.TestOntologyLookup.errorChainHasIdentifier(caughtME, expectedErrorId);
+                    testCase.verifyTrue(hasId, ...
+                        sprintf('Expected error id "%s" in the error/cause chain for "%s", but got "%s".', ...
+                                expectedErrorId, lookupStr, caughtME.identifier));
+                end
             end
         end
     end % methods (Test)
 
     methods (Static)
+        function tf = errorChainHasIdentifier(ME, targetId)
+            % ERRORCHAINHASIDENTIFIER - True if ME (or any cause, recursively)
+            %   has identifier TARGETID. ndi.ontology.lookup re-wraps subclass
+            %   errors and attaches the original as a cause, so the pinned
+            %   identifier may live several levels down the cause chain.
+            tf = false;
+            if isempty(ME)
+                return;
+            end
+            if strcmp(ME.identifier, targetId)
+                tf = true;
+                return;
+            end
+            causes = ME.cause;
+            for k = 1:numel(causes)
+                if ndi.unittest.ontology.TestOntologyLookup.errorChainHasIdentifier(causes{k}, targetId)
+                    tf = true;
+                    return;
+                end
+            end
+        end % function errorChainHasIdentifier
+
         % Helper function to load test cases from JSON file.
         % Returns a CELL ARRAY of structs.
         function testCasesCellArray = loadOntologyTestCases()
