@@ -12,7 +12,7 @@ classdef TestWBStrainSecurity < matlab.unittest.TestCase
     methods (Test)
 
         function testWormbaseEndpointUsesHttps(testCase)
-            src = TestWBStrainSecurity.readWBStrainSource();
+            src = ndi.unittest.ontology.TestWBStrainSecurity.readWBStrainSource();
 
             testCase.verifyTrue(contains(src, 'https://rest.wormbase.org'), ...
                 'WBStrain must fetch strain metadata from rest.wormbase.org over https.');
