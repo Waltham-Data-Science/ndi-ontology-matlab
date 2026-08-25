@@ -237,7 +237,7 @@
       "lookup_string": "NCIT:C9523",
       "should_succeed": true,
       "expected_id": "NCIT:C9523",
-      "expected_name": "Stage I Esophageal Cancer",
+      "expected_name": "BCD Regimen",
       "expected_error_id": ""
     },
     {
