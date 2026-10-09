@@ -49,6 +49,7 @@
     {"prefix": "NCIT", "ontology_name": "NCIT"},
     {"prefix": "SNOMED", "ontology_name": "SNOMED"},
     {"prefix": "WBStrain", "ontology_name": "WBStrain"},
+    {"prefix": "wormbase", "ontology_name": "WBStrain"},
     {"prefix": "EFO", "ontology_name": "EFO"},
     {"prefix": "EDAM", "ontology_name": "EDAM"},
     {"prefix": "format", "ontology_name": "EDAM"},

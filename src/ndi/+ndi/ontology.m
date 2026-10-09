@@ -232,6 +232,10 @@ methods (Static)
         %
         persistent lookupCache lookupKeys cacheSize;
 
+        % A string scalar is read as a character vector: indexing it by
+        % character (the prefix below) and the cache keys need char.
+        lookupString = convertStringsToChars(lookupString);
+
         % Handle cache clearing request
         if nargin == 1 && ischar(lookupString) && strcmpi(lookupString, 'clear')
             lookupCache = [];
