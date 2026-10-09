@@ -463,49 +463,49 @@
       "expected_name": ""
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "WBStrain:00000001",
       "should_succeed": true,
       "expected_id": "WBStrain:00000001",
       "expected_name": "N2"
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "WBStrain:N2",
       "should_succeed": true,
       "expected_id": "WBStrain:00000001",
       "expected_name": "N2"
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "WBStrain:MT9455",
       "should_succeed": true,
       "expected_id": "WBStrain:00027363",
       "expected_name": "MT9455"
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "wormbase:WBStrain00000001",
       "should_succeed": true,
       "expected_id": "wormbase:WBStrain00000001",
       "expected_name": "N2"
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "WBStrain:99999999",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "WBStrain:NoSuchStrainName",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
     },
     {
-      "ontology": "WBStrain",
+      "ontology": "WormBase",
       "lookup_string": "wormbase:WBGene00000001",
       "should_succeed": false,
       "expected_id": "",

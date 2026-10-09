@@ -1,7 +1,8 @@
-% Location: +ndi/+ontology/WBStrain.m
-classdef WBStrain < ndi.ontology
-% WBSTRAIN - NDI Ontology object for the WormBase Strain database.
-%   Inherits from ndi.ontology and implements lookupTermOrID for WBStrain.
+% Location: +ndi/+ontology/WormBase.m
+classdef WormBase < ndi.ontology
+% WORMBASE - NDI Ontology object for WormBase strains.
+%   Inherits from ndi.ontology and implements lookupTermOrID for the
+%   WBStrain and wormbase prefixes.
 %
 %   Strains are read from WormMine, the Alliance of Genome Resources'
 %   InterMine copy of WormBase (https://wormmine.alliancegenome.org). The
@@ -9,8 +10,8 @@ classdef WBStrain < ndi.ontology
 %   programmatic requests with a Cloudflare browser challenge (HTTP 403),
 %   so every lookup through them failed.
     methods
-        function obj = WBStrain()
-            % WBSTRAIN - Constructor for the WBStrain ontology object.
+        function obj = WormBase()
+            % WORMBASE - Constructor for the WormBase ontology object.
             % Implicitly calls the superclass constructor ndi.ontology().
         end % constructor
         function [id, name, definition, synonyms] = lookupTermOrID(obj, term_or_id_or_name)
@@ -32,7 +33,7 @@ classdef WBStrain < ndi.ontology
             prefix = 'WBStrain';
             term = strtrim(char(term_or_id_or_name));
             if contains(term, '*')
-                error('ndi:ontology:WBStrain:InvalidInput', ...
+                error('ndi:ontology:WormBase:InvalidInput', ...
                     'A strain name or ID cannot contain "*" ("%s").', term);
             end
             isCurie = ~isempty(regexp(term, ['^' prefix '\d{8}$'], 'once'));
@@ -40,7 +41,7 @@ classdef WBStrain < ndi.ontology
                 term = term(numel(prefix)+1:end);
             elseif ~isempty(regexp(term, '^(CE\d{5}|WB[A-Z][a-z]+\d+)$', 'once'))
                 % another kind of WormBase id, such as a gene (WBGene00000001)
-                error('ndi:ontology:WBStrain:NotAStrain', ...
+                error('ndi:ontology:WormBase:NotAStrain', ...
                     '"%s" is a WormBase id but not a strain id (WBStrain followed by eight digits).', term);
             end
             isIdLookup = ~isempty(regexp(term, '^\d{8}$', 'once'));
@@ -53,9 +54,9 @@ classdef WBStrain < ndi.ontology
             end
 
             try
-                strains = ndi.ontology.WBStrain.queryWormMine(path, value);
+                strains = ndi.ontology.WormBase.queryWormMine(path, value);
             catch ME
-                baseME = MException('ndi:ontology:WBStrain:APILookupFailed', ...
+                baseME = MException('ndi:ontology:WormBase:APILookupFailed', ...
                     'The WormMine query for WormBase strain "%s" failed.', term);
                 baseME = addCause(baseME, ME);
                 throw(baseME);
@@ -63,24 +64,24 @@ classdef WBStrain < ndi.ontology
 
             if isempty(strains)
                 if isIdLookup
-                    error('ndi:ontology:WBStrain:IDNotFound', ...
+                    error('ndi:ontology:WormBase:IDNotFound', ...
                         'No WormBase strain has the ID "%s".', value);
                 else
-                    error('ndi:ontology:WBStrain:NameNotFound', ...
+                    error('ndi:ontology:WormBase:NameNotFound', ...
                         'No WormBase strain is named "%s".', term);
                 end
             end
             if numel(strains) > 1
-                error('ndi:ontology:WBStrain:NameNotUnique', ...
+                error('ndi:ontology:WormBase:NameNotUnique', ...
                     '%d WormBase strains match "%s"; use the WBStrain ID instead.', numel(strains), term);
             end
 
-            [id, name, definition, synonyms] = ndi.ontology.WBStrain.parseStrain(strains(1));
+            [id, name, definition, synonyms] = ndi.ontology.WormBase.parseStrain(strains(1));
             if isCurie
                 id = ['wormbase:' strrep(id, ':', '')];
             end
             if ~isIdLookup && ~strcmpi(name, term)
-                error('ndi:ontology:WBStrain:TermMismatch', ...
+                error('ndi:ontology:WormBase:TermMismatch', ...
                     'WormMine returned strain "%s" for the name "%s". Try the WBStrain ID instead.', name, term);
             end
         end
@@ -90,7 +91,7 @@ classdef WBStrain < ndi.ontology
         function [id, name, definition, synonyms] = parseStrain(strain)
             % PARSESTRAIN - The lookup outputs for one WormMine strain record.
             %
-            %   [ID, NAME, DEFINITION, SYNONYMS] = ndi.ontology.WBStrain.parseStrain(STRAIN)
+            %   [ID, NAME, DEFINITION, SYNONYMS] = ndi.ontology.WormBase.parseStrain(STRAIN)
             %
             %   STRAIN is one record of a WormMine 'jsonobjects' query, as
             %   decoded by webread: a struct with fields primaryIdentifier,
@@ -98,18 +99,18 @@ classdef WBStrain < ndi.ontology
             %   which may be empty. Public so the parsing can be tested
             %   without the network.
             prefix = 'WBStrain';
-            field = @(f) ndi.ontology.WBStrain.textField(strain, f);
+            field = @(f) ndi.ontology.WormBase.textField(strain, f);
 
             wbId = field('primaryIdentifier');
             if isempty(regexp(wbId, ['^' prefix '\d{8}$'], 'once'))
-                error('ndi:ontology:WBStrain:APIParsingFailed', ...
+                error('ndi:ontology:WormBase:APIParsingFailed', ...
                     'WormMine returned a strain without a valid WBStrain ID ("%s").', wbId);
             end
             id = [prefix ':' wbId(numel(prefix)+1:end)];
 
             name = field('name');
             if isempty(name)
-                error('ndi:ontology:WBStrain:APIParsingFailed', ...
+                error('ndi:ontology:WormBase:APIParsingFailed', ...
                     'WormMine returned strain %s without a name.', id);
             end
 
@@ -138,15 +139,15 @@ classdef WBStrain < ndi.ontology
                 'Strain.otherName Strain.mutagen Strain.outcrossed'];
             query = sprintf(['<query model="genomic" view="%s">' ...
                 '<constraint path="%s" op="=" value="%s"/></query>'], ...
-                view, path, ndi.ontology.WBStrain.escapeXml(value));
+                view, path, ndi.ontology.WormBase.escapeXml(value));
             options = weboptions('Timeout', 30, 'ContentType', 'json');
             response = webread(serviceUrl, 'query', query, 'format', 'jsonobjects', options);
             if ~isstruct(response) || ~isfield(response, 'results')
-                error('ndi:ontology:WBStrain:APIParsingFailed', ...
+                error('ndi:ontology:WormBase:APIParsingFailed', ...
                     'WormMine returned an unexpected response.');
             end
             if isfield(response, 'wasSuccessful') && isequal(response.wasSuccessful, false)
-                error('ndi:ontology:WBStrain:APILookupFailed', ...
+                error('ndi:ontology:WormBase:APILookupFailed', ...
                     'WormMine reported an error: %s', char(string(response.error)));
             end
             strains = response.results;
