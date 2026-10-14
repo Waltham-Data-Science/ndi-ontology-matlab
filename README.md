@@ -23,7 +23,7 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `EDAM` / `format` | [EDAM Bioinformatics Ontology](http://edamontology.org) |
 | `EMPTY` | [Experimental Measurements, Purposes, and Treatments ontologY](https://github.com/Waltham-Data-Science/empty-ontology) |
 | `NDIC` | NDI Controlled Vocabulary (local) |
-| `WBStrain` | [WormBase Strain Database](https://wormbase.org) |
+| `WBStrain` / `wormbase` | [WormBase](https://wormbase.org) strains, read from [WormMine](https://wormmine.alliancegenome.org) |
 | `STATO` | [Statistics Ontology](http://stato-ontology.org/) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
@@ -133,7 +133,7 @@ src/ndi/
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
       OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m,
-      SNOMED.m, STATO.m, Uberon.m, WBStrain.m
+      SNOMED.m, STATO.m, Uberon.m, WormBase.m
     +common/
       PathConstants.m       % Path constants
     +fun/

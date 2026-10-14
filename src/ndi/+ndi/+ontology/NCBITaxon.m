@@ -110,7 +110,68 @@ classdef NCBITaxon < ndi.ontology
 
     end % methods
 
+    methods (Static)
+        function names = parseOtherNames(xml_response)
+            % PARSEOTHERNAMES - The other names of a taxon in an efetch record.
+            %
+            %   NAMES = ndi.ontology.NCBITaxon.parseOtherNames(XML_RESPONSE)
+            %
+            %   Reads the first <OtherNames> block of an E-utilities efetch
+            %   taxonomy record and returns its names as a column cell array,
+            %   in the order they appear, without duplicates. NCBI tags each
+            %   name with its kind, either as its own element
+            %   (<GenbankCommonName>house mouse</GenbankCommonName>) or as a
+            %   <Name> entry with a <ClassCDE> and a <DispName>. The kinds
+            %   kept are those naming the same taxon: common names, synonyms
+            %   (such as a former genus, 'Rhabditis elegans'), equivalent
+            %   names and acronyms. Authority citations ('Mus musculus
+            %   Linnaeus, 1758'), misspellings, and <Includes> (narrower
+            %   groups such as 'nude mice') are left out. Public so the
+            %   parsing can be tested without the network.
+            names = {};
+            block = regexp(xml_response, '(?s)<OtherNames>(.*?)</OtherNames>', 'tokens', 'once');
+            if isempty(block)
+                return;
+            end
+            block = block{1};
+            keptKinds = {'genbank common name', 'common name', 'synonym', ...
+                'genbank synonym', 'equivalent name', 'acronym', 'genbank acronym'};
+            % <Name> entries carry their kind in <ClassCDE>
+            entries = regexp(block, '(?s)<Name>(.*?)</Name>', 'tokens');
+            entryNames = {};
+            for k = 1:numel(entries)
+                kind = regexp(entries{k}{1}, '<ClassCDE>(.*?)</ClassCDE>', 'tokens', 'once');
+                dispName = regexp(entries{k}{1}, '<DispName>(.*?)</DispName>', 'tokens', 'once');
+                if ~isempty(kind) && ~isempty(dispName) && any(strcmpi(strtrim(kind{1}), keptKinds))
+                    entryNames{end+1, 1} = dispName{1}; %#ok<AGROW>
+                end
+            end
+            % the elements named by their kind, outside the <Name> entries
+            block = regexprep(block, '(?s)<Name>.*?</Name>', '');
+            tagged = regexp(block, ['<(GenbankCommonName|CommonName|Synonym|GenbankSynonym|' ...
+                'EquivalentName|Acronym|GenbankAcronym)>(.*?)</\1>'], 'tokens');
+            names = cellfun(@(x) x{2}, tagged(:), 'UniformOutput', false);
+            names = [names; entryNames];
+            names = strtrim(ndi.ontology.NCBITaxon.unescapeXml(names));
+            names = names(~cellfun('isempty', names));
+            if isempty(names)
+                names = {};
+                return;
+            end
+            names = unique(names, 'stable');
+        end % function parseOtherNames
+    end % methods (Static)
+
     methods (Static, Access = private)
+        function text = unescapeXml(text)
+            % UNESCAPEXML - Replace the five predefined XML entities.
+            text = strrep(text, '&lt;', '<');
+            text = strrep(text, '&gt;', '>');
+            text = strrep(text, '&quot;', '"');
+            text = strrep(text, '&apos;', '''');
+            text = strrep(text, '&amp;', '&');
+        end % function unescapeXml
+
         % --- Helper function for the actual NCBI Taxonomy ID Lookup via efetch ---
         function [id, name, definition, synonyms] = performNcbiTaxonIdLookup(taxid)
             %PERFORMNCBITAXONIDLOOKUP Fetches and parses record for a given TaxID using efetch.
@@ -149,21 +210,7 @@ classdef NCBITaxon < ndi.ontology
 
                 definition = ''; % No standard definition field
 
-                syn_list = {};
-                common_name_matches = regexp(xml_response, '<CommonName>(.*?)</CommonName>', 'tokens');
-                if ~isempty(common_name_matches), syn_list = [syn_list; cellfun(@(x) x{1}, common_name_matches, 'UniformOutput', false)]; end
-
-                other_name_matches = regexp(xml_response, '<OtherNames>.*?<Name>.*?<DispName>(.*?)</DispName>.*?</Name>.*?</OtherNames>', 'tokens');
-                 if ~isempty(other_name_matches)
-                     all_other_names = {};
-                     for k=1:length(other_name_matches)
-                         disp_names_in_block = regexp(other_name_matches{k}{1}, '<DispName>(.*?)</DispName>', 'tokens');
-                         if ~isempty(disp_names_in_block), all_other_names = [all_other_names; cellfun(@(x) x{1}, disp_names_in_block(:), 'UniformOutput', false)]; end
-                     end
-                     syn_list = [syn_list; all_other_names];
-                 end
-
-                if ~isempty(syn_list), synonyms = unique(syn_list, 'stable'); synonyms = synonyms(~cellfun('isempty', synonyms)); if isempty(synonyms), synonyms = {}; end; else, synonyms = {}; end
+                synonyms = ndi.ontology.NCBITaxon.parseOtherNames(xml_response);
 
             catch ME
                 % Rethrow specific ID not found error, wrap others
