@@ -45,6 +45,10 @@
       "ontology_name": "MICRO"
     },
     {
+      "prefix": "CREDIT",
+      "ontology_name": "CREDIT"
+    },
+    {
        "prefix": "RRID",
        "ontology_name": "RRID"
     },
@@ -106,6 +110,11 @@
       "name": "MICRO",
       "homepage": "http://obofoundry.org/ontology/micro.html",
       "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/micro"
+    },
+    {
+      "name": "CREDIT",
+      "homepage": "https://credit.niso.org/",
+      "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/cro"
     },
     {
      "name": "RRID",
