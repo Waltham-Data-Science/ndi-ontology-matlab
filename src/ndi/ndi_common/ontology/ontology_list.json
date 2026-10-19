@@ -41,6 +41,10 @@
       "ontology_name": "CL"
     },
     {
+      "prefix": "MICRO",
+      "ontology_name": "MICRO"
+    },
+    {
        "prefix": "RRID",
        "ontology_name": "RRID"
     },
@@ -97,6 +101,11 @@
       "name": "CL",
       "homepage": "http://obofoundry.org/ontology/cl.html",
       "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/cl"
+    },
+    {
+      "name": "MICRO",
+      "homepage": "http://obofoundry.org/ontology/micro.html",
+      "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/micro"
     },
     {
      "name": "RRID",

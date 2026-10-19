@@ -580,6 +580,41 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000178",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000178",
+      "expected_name": "peptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:peptone",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000178",
+      "expected_name": "peptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000182",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000182",
+      "expected_name": "tryptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000201",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000201",
+      "expected_name": "yeast extract"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:NoSuchMedium",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
