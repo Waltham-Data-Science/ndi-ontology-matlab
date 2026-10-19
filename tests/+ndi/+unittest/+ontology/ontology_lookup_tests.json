@@ -618,28 +618,49 @@
     },
     {
       "ontology": "CREDIT",
+      "lookup_string": "credit:conceptualization",
+      "should_succeed": true,
+      "expected_id": "credit:conceptualization",
+      "expected_name": "Conceptualization"
+    },
+    {
+      "ontology": "CREDIT",
       "lookup_string": "CREDIT:00000001",
       "should_succeed": true,
-      "expected_id": "CREDIT:00000001",
-      "expected_name": "conceptualization role"
+      "expected_id": "credit:conceptualization",
+      "expected_name": "Conceptualization"
     },
     {
       "ontology": "CREDIT",
-      "lookup_string": "CREDIT:conceptualization role",
+      "lookup_string": "credit:writing - review & editing",
       "should_succeed": true,
-      "expected_id": "CREDIT:00000001",
-      "expected_name": "conceptualization role"
+      "expected_id": "credit:writing-review-editing",
+      "expected_name": "Writing – review & editing"
     },
     {
       "ontology": "CREDIT",
-      "lookup_string": "CREDIT:00000014",
+      "lookup_string": "credit:writing review and editing role",
       "should_succeed": true,
-      "expected_id": "CREDIT:00000014",
-      "expected_name": "writing review and editing role"
+      "expected_id": "credit:writing-review-editing",
+      "expected_name": "Writing – review & editing"
     },
     {
       "ontology": "CREDIT",
-      "lookup_string": "CREDIT:99999999",
+      "lookup_string": "credit:data-curation",
+      "should_succeed": true,
+      "expected_id": "credit:data-curation",
+      "expected_name": "Data curation"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:corresponding author",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "CREDIT:00000015",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
