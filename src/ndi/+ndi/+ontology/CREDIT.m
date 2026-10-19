@@ -37,7 +37,7 @@ classdef CREDIT < ndi.ontology
             % CREDIT - Constructor for the CREDIT ontology object.
         end % constructor
 
-        function [id, name, definition, synonyms] = lookupTermOrID(~, term_or_id_or_name)
+        function [id, name, definition, synonyms] = lookupTermOrID(obj, term_or_id_or_name)
             % LOOKUPTERMORID - Looks up a CRediT role by slug, name or number.
             %
             %   [ID, NAME, DEFINITION, SYNONYMS] = lookupTermOrID(OBJ, TERM)
@@ -47,6 +47,10 @@ classdef CREDIT < ndi.ontology
             %   spellings ('Writing - review & editing', 'writing review and
             %   editing role'), or CRO's number ('00000014', '14'). ID is always
             %   'credit:<slug>'; SYNONYMS holds CRO's identifier for the role.
+            arguments
+                obj (1,1) ndi.ontology.CREDIT %#ok<INUSA> (the lookup interface)
+                term_or_id_or_name {mustBeText}
+            end
             k = ndi.ontology.CREDIT.find(term_or_id_or_name);
             if isempty(k)
                 error('ndi:ontology:CREDIT:LookupFailed', ...
@@ -64,6 +68,9 @@ classdef CREDIT < ndi.ontology
     methods (Static)
         function k = find(term)
             % FIND - The row of ROLES that TERM names, or [] if none.
+            arguments
+                term {mustBeText}
+            end
             R = ndi.ontology.CREDIT.ROLES;
             term = strtrim(char(term));
             k = [];
@@ -87,6 +94,9 @@ classdef CREDIT < ndi.ontology
         function s = normalise(s)
             % NORMALISE - Lower case, words only: dashes, '&', 'and' and a
             % trailing 'role' do not distinguish one role from another.
+            arguments
+                s {mustBeText}
+            end
             s = lower(char(s));
             s = regexprep(s, '[^a-z]+', ' ');
             words = strsplit(strtrim(s), ' ');

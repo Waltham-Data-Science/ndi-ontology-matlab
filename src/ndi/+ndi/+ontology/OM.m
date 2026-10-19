@@ -106,8 +106,11 @@ classdef OM < ndi.ontology
             %   on first use and returns its index (see parseRDF).
             %   ndi.ontology.OM.fileIndex(true) forgets it, so the next call
             %   downloads again.
+            arguments
+                reset (1,1) logical = false
+            end
             persistent cached
-            if nargin > 0 && reset
+            if reset
                 cached = [];
                 idx = [];
                 return;
@@ -130,6 +133,9 @@ classdef OM < ndi.ontology
             %   element, e.g. 'om:Unit', 'om:UnitDivision', 'owl:Class'). OM
             %   states one identifier in several top-level blocks (labels in one,
             %   the comment in another); they are merged.
+            arguments
+                txt {mustBeText}
+            end
             txt = char(txt);
             blocks = regexp(txt, '^  <([\w:]+) rdf:about="&om;([^"]+)">(.*?)^  </\1>', ...
                 'tokens', 'lineanchors');
@@ -172,6 +178,10 @@ classdef OM < ndi.ontology
             %   the English label ignoring case; an English alternative label
             %   ignoring case; the camel-case heuristic ('MetrePerSecond' ->
             %   'metre per second') against the labels.
+            arguments
+                idx (1,1) struct
+                term {mustBeText}
+            end
             k = [];
             term = strtrim(char(term));
             if isempty(term), return; end

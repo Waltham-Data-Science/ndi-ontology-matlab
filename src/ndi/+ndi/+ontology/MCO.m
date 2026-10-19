@@ -11,7 +11,7 @@ classdef MCO < ndi.ontology
             % Implicitly calls the superclass constructor ndi.ontology().
         end % constructor
 
-        function [id, name, definition, synonyms] = lookupTermOrID(~, term_or_id_or_name)
+        function [id, name, definition, synonyms] = lookupTermOrID(obj, term_or_id_or_name)
             % LOOKUPTERMORID - Looks up a term in the Microbial Conditions Ontology (MCO) by ID or name.
             %
             %   [ID, NAME, DEFINITION, SYNONYMS] = lookupTermOrID(OBJ, TERM_OR_ID_OR_NAME)
@@ -26,6 +26,10 @@ classdef MCO < ndi.ontology
             %   See also: ndi.ontology.lookup (static dispatcher),
             %             ndi.ontology.preprocessLookupInput (static helper),
             %             ndi.ontology.searchOLSAndPerformIRILookup (static helper)
+            arguments
+                obj (1,1) ndi.ontology.MCO %#ok<INUSA> (the lookup interface)
+                term_or_id_or_name {mustBeText}
+            end
 
             % Define ontology specifics for MCO
             ontology_prefix = 'MCO';

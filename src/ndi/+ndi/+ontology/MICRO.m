@@ -11,7 +11,7 @@ classdef MICRO < ndi.ontology
             % Implicitly calls the superclass constructor ndi.ontology().
         end % constructor
 
-        function [id, name, definition, synonyms] = lookupTermOrID(~, term_or_id_or_name)
+        function [id, name, definition, synonyms] = lookupTermOrID(obj, term_or_id_or_name)
             % LOOKUPTERMORID - Looks up a term in MicrO (MICRO) by ID or name.
             %
             %   [ID, NAME, DEFINITION, SYNONYMS] = lookupTermOrID(OBJ, TERM_OR_ID_OR_NAME)
@@ -26,6 +26,10 @@ classdef MICRO < ndi.ontology
             %   See also: ndi.ontology.lookup (static dispatcher),
             %             ndi.ontology.preprocessLookupInput (static helper),
             %             ndi.ontology.searchOLSAndPerformIRILookup (static helper)
+            arguments
+                obj (1,1) ndi.ontology.MICRO %#ok<INUSA> (the lookup interface)
+                term_or_id_or_name {mustBeText}
+            end
 
             % Define ontology specifics for MICRO
             ontology_prefix = 'MICRO';
