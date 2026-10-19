@@ -45,6 +45,10 @@
       "ontology_name": "MICRO"
     },
     {
+      "prefix": "MCO",
+      "ontology_name": "MCO"
+    },
+    {
       "prefix": "CREDIT",
       "ontology_name": "CREDIT"
     },
@@ -110,6 +114,11 @@
       "name": "MICRO",
       "homepage": "http://obofoundry.org/ontology/micro.html",
       "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/micro"
+    },
+    {
+      "name": "MCO",
+      "homepage": "https://github.com/microbial-conditions-ontology/microbial-conditions-ontology",
+      "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/mco"
     },
     {
       "name": "CREDIT",

@@ -617,6 +617,27 @@
       "expected_name": ""
     },
     {
+      "ontology": "MCO",
+      "lookup_string": "MCO:0000059",
+      "should_succeed": true,
+      "expected_id": "MCO:0000059",
+      "expected_name": "OD600"
+    },
+    {
+      "ontology": "MCO",
+      "lookup_string": "MCO:OD600",
+      "should_succeed": true,
+      "expected_id": "MCO:0000059",
+      "expected_name": "OD600"
+    },
+    {
+      "ontology": "MCO",
+      "lookup_string": "MCO:NoSuchCondition",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "CREDIT",
       "lookup_string": "credit:conceptualization",
       "should_succeed": true,
