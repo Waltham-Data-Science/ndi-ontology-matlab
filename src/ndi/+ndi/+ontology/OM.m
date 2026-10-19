@@ -133,17 +133,22 @@ classdef OM < ndi.ontology
             txt = char(txt);
             blocks = regexp(txt, '^  <([\w:]+) rdf:about="&om;([^"]+)">(.*?)^  </\1>', ...
                 'tokens', 'lineanchors');
-            local = {}; label = {}; definition = {}; alternative = {}; kind = {};
+            % at most one entry per block; trimmed to the entries found
+            n = numel(blocks);
+            local = cell(1, n); label = repmat({''}, 1, n); definition = repmat({''}, 1, n);
+            alternative = repmat({{}}, 1, n); kind = cell(1, n);
+            used = 0;
             where = containers.Map('KeyType', 'char', 'ValueType', 'double');
             for b = 1:numel(blocks)
                 tag = blocks{b}{1}; loc = blocks{b}{2}; body = blocks{b}{3};
                 if isKey(where, loc)
                     k = where(loc);
                 else
-                    k = numel(local) + 1;
+                    used = used + 1;
+                    k = used;
                     where(loc) = k;
-                    local{k} = loc; label{k} = ''; definition{k} = ''; %#ok<AGROW>
-                    alternative{k} = {}; kind{k} = tag; %#ok<AGROW>
+                    local{k} = loc;
+                    kind{k} = tag;
                 end
                 en = regexp(body, '<rdfs:label xml:lang="en">([^<]+)</rdfs:label>', 'tokens', 'once');
                 if isempty(label{k}) && ~isempty(en), label{k} = strtrim(en{1}); end
@@ -153,8 +158,10 @@ classdef OM < ndi.ontology
                 alternative{k} = unique([alternative{k}, cellfun(@(x) strtrim(x{1}), alt, ...
                     'UniformOutput', false)], 'stable');
             end
-            idx = struct('local', {local}, 'label', {label}, 'definition', {definition}, ...
-                'alternative', {alternative}, 'kind', {kind});
+            keep = 1:used;
+            idx = struct('local', {local(keep)}, 'label', {label(keep)}, ...
+                'definition', {definition(keep)}, 'alternative', {alternative(keep)}, ...
+                'kind', {kind(keep)});
         end
 
         function k = findInIndex(idx, term)
@@ -168,7 +175,7 @@ classdef OM < ndi.ontology
             k = [];
             term = strtrim(char(term));
             if isempty(term), return; end
-            spaced = lower(strtrim(regexprep(term, '([a-z])([A-Z])', '$1 $2')));
+            spaced = strtrim(regexprep(term, '([a-z])([A-Z])', '$1 $2'));
             rules = { ...
                 @() find(strcmp(idx.local, term)), ...
                 @() find(strcmpi(idx.local, term)), ...
