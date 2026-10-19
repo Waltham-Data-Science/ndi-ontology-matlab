@@ -638,6 +638,27 @@
       "expected_name": ""
     },
     {
+      "ontology": "OBI",
+      "lookup_string": "OBI:1000048",
+      "should_succeed": true,
+      "expected_id": "OBI:1000048",
+      "expected_name": "transgenic organism"
+    },
+    {
+      "ontology": "OBI",
+      "lookup_string": "OBI:transgenic organism",
+      "should_succeed": true,
+      "expected_id": "OBI:1000048",
+      "expected_name": "transgenic organism"
+    },
+    {
+      "ontology": "OBI",
+      "lookup_string": "OBI:NoSuchInvestigation",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "CREDIT",
       "lookup_string": "credit:conceptualization",
       "should_succeed": true,
