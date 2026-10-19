@@ -53,6 +53,10 @@
       "ontology_name": "OBI"
     },
     {
+      "prefix": "ZECO",
+      "ontology_name": "ZECO"
+    },
+    {
       "prefix": "CREDIT",
       "ontology_name": "CREDIT"
     },
@@ -128,6 +132,11 @@
       "name": "OBI",
       "homepage": "http://obi-ontology.org",
       "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/obi"
+    },
+    {
+      "name": "ZECO",
+      "homepage": "https://github.com/ybradford/zebrafish-experimental-conditions-ontology",
+      "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/zeco"
     },
     {
       "name": "CREDIT",

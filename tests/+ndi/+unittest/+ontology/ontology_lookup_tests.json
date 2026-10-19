@@ -659,6 +659,34 @@
       "expected_name": ""
     },
     {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:0000113",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000113",
+      "expected_name": "food availability"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:food availability",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000113",
+      "expected_name": "food availability"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:0000114",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000114",
+      "expected_name": "fasting"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:NoSuchCondition",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "CREDIT",
       "lookup_string": "credit:conceptualization",
       "should_succeed": true,
