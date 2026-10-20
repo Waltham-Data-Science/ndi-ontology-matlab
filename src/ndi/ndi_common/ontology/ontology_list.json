@@ -57,6 +57,14 @@
       "ontology_name": "ZECO"
     },
     {
+      "prefix": "WBls",
+      "ontology_name": "WBls"
+    },
+    {
+      "prefix": "time",
+      "ontology_name": "OWLTime"
+    },
+    {
       "prefix": "CREDIT",
       "ontology_name": "CREDIT"
     },
@@ -137,6 +145,16 @@
       "name": "ZECO",
       "homepage": "https://github.com/ybradford/zebrafish-experimental-conditions-ontology",
       "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/zeco"
+    },
+    {
+      "name": "WBls",
+      "homepage": "https://github.com/obophenotype/c-elegans-development-ontology",
+      "api_url": "https://www.ebi.ac.uk/ols/api/ontologies/wbls"
+    },
+    {
+      "name": "OWLTime",
+      "homepage": "https://www.w3.org/TR/owl-time/",
+      "api_url": null
     },
     {
       "name": "CREDIT",

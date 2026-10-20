@@ -734,6 +734,69 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:0000038",
+      "should_succeed": true,
+      "expected_id": "WBls:0000038",
+      "expected_name": "L4 larva Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:L4 larva Ce",
+      "should_succeed": true,
+      "expected_id": "WBls:0000038",
+      "expected_name": "L4 larva Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:0000041",
+      "should_succeed": true,
+      "expected_id": "WBls:0000041",
+      "expected_name": "adult Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:9999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:intervalDuring",
+      "should_succeed": true,
+      "expected_id": "time:intervalDuring",
+      "expected_name": "interval during"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:interval during",
+      "should_succeed": true,
+      "expected_id": "time:intervalDuring",
+      "expected_name": "interval during"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "TIME:intervalMetBy",
+      "should_succeed": true,
+      "expected_id": "time:intervalMetBy",
+      "expected_name": "interval met by"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:intervalDisjoint",
+      "should_succeed": true,
+      "expected_id": "time:intervalDisjoint",
+      "expected_name": "interval disjoint"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:Instant",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
