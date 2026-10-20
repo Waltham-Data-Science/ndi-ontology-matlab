@@ -637,6 +637,8 @@ methods (Static)
         fprintf('Cleared centralized ontology lookup cache.\n');
         ndi.ontology.lookupOBOFile('clear');
         fprintf('Cleared OBO file data cache.\n');
+        ndi.ontology.OM.fileIndex(true);
+        fprintf('Cleared OM file index.\n');
         
     end % function clearCache
 end % methods (Static)

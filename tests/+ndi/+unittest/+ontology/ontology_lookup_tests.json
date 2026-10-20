@@ -92,6 +92,76 @@
       "expected_name": ""
     },
     {
+      "ontology": "OM",
+      "lookup_string": "OM:metre",
+      "should_succeed": true,
+      "expected_id": "OM:metre",
+      "expected_name": "metre"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:meter",
+      "should_succeed": true,
+      "expected_id": "OM:metre",
+      "expected_name": "metre"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:second",
+      "should_succeed": true,
+      "expected_id": "OM:second-Time",
+      "expected_name": "second"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:second-Time",
+      "should_succeed": true,
+      "expected_id": "OM:second-Time",
+      "expected_name": "second"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:litre",
+      "should_succeed": true,
+      "expected_id": "OM:litre",
+      "expected_name": "litre"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:metre per second",
+      "should_succeed": true,
+      "expected_id": "OM:metrePerSecond-Time",
+      "expected_name": "metre per second"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:MetrePerSecond",
+      "should_succeed": true,
+      "expected_id": "OM:metrePerSecond-Time",
+      "expected_name": "metre per second"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:metrePerSecond-TimeSquared",
+      "should_succeed": true,
+      "expected_id": "OM:metrePerSecond-TimeSquared",
+      "expected_name": "metre per second squared"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:pixel",
+      "should_succeed": true,
+      "expected_id": "OM:pixel",
+      "expected_name": "pixel"
+    },
+    {
+      "ontology": "OM",
+      "lookup_string": "OM:MolarVolumeUnit",
+      "should_succeed": true,
+      "expected_id": "OM:MolarVolumeUnit",
+      "expected_name": "molar volume unit"
+    },
+    {
       "ontology": "CHEBI",
       "lookup_string": "CHEBI:15377",
       "should_succeed": true,
@@ -507,6 +577,223 @@
     {
       "ontology": "WormBase",
       "lookup_string": "wormbase:WBGene00000001",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000178",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000178",
+      "expected_name": "peptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:peptone",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000178",
+      "expected_name": "peptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000182",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000182",
+      "expected_name": "tryptone"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:0000201",
+      "should_succeed": true,
+      "expected_id": "MICRO:0000201",
+      "expected_name": "yeast extract"
+    },
+    {
+      "ontology": "MICRO",
+      "lookup_string": "MICRO:NoSuchMedium",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "MCO",
+      "lookup_string": "MCO:0000059",
+      "should_succeed": true,
+      "expected_id": "MCO:0000059",
+      "expected_name": "OD600"
+    },
+    {
+      "ontology": "MCO",
+      "lookup_string": "MCO:OD600",
+      "should_succeed": true,
+      "expected_id": "MCO:0000059",
+      "expected_name": "OD600"
+    },
+    {
+      "ontology": "MCO",
+      "lookup_string": "MCO:NoSuchCondition",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "OBI",
+      "lookup_string": "OBI:1000048",
+      "should_succeed": true,
+      "expected_id": "OBI:1000048",
+      "expected_name": "transgenic organism"
+    },
+    {
+      "ontology": "OBI",
+      "lookup_string": "OBI:transgenic organism",
+      "should_succeed": true,
+      "expected_id": "OBI:1000048",
+      "expected_name": "transgenic organism"
+    },
+    {
+      "ontology": "OBI",
+      "lookup_string": "OBI:NoSuchInvestigation",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:0000113",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000113",
+      "expected_name": "food availability"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:food availability",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000113",
+      "expected_name": "food availability"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:0000114",
+      "should_succeed": true,
+      "expected_id": "ZECO:0000114",
+      "expected_name": "fasting"
+    },
+    {
+      "ontology": "ZECO",
+      "lookup_string": "ZECO:NoSuchCondition",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:conceptualization",
+      "should_succeed": true,
+      "expected_id": "credit:conceptualization",
+      "expected_name": "Conceptualization"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "CREDIT:00000001",
+      "should_succeed": true,
+      "expected_id": "credit:conceptualization",
+      "expected_name": "Conceptualization"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:writing - review & editing",
+      "should_succeed": true,
+      "expected_id": "credit:writing-review-editing",
+      "expected_name": "Writing – review & editing"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:writing review and editing role",
+      "should_succeed": true,
+      "expected_id": "credit:writing-review-editing",
+      "expected_name": "Writing – review & editing"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:data-curation",
+      "should_succeed": true,
+      "expected_id": "credit:data-curation",
+      "expected_name": "Data curation"
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "credit:corresponding author",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "CREDIT",
+      "lookup_string": "CREDIT:00000015",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:0000038",
+      "should_succeed": true,
+      "expected_id": "WBls:0000038",
+      "expected_name": "L4 larva Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:L4 larva Ce",
+      "should_succeed": true,
+      "expected_id": "WBls:0000038",
+      "expected_name": "L4 larva Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:0000041",
+      "should_succeed": true,
+      "expected_id": "WBls:0000041",
+      "expected_name": "adult Ce"
+    },
+    {
+      "ontology": "WBls",
+      "lookup_string": "WBls:9999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:intervalDuring",
+      "should_succeed": true,
+      "expected_id": "time:intervalDuring",
+      "expected_name": "interval during"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:interval during",
+      "should_succeed": true,
+      "expected_id": "time:intervalDuring",
+      "expected_name": "interval during"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "TIME:intervalMetBy",
+      "should_succeed": true,
+      "expected_id": "time:intervalMetBy",
+      "expected_name": "interval met by"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:intervalDisjoint",
+      "should_succeed": true,
+      "expected_id": "time:intervalDisjoint",
+      "expected_name": "interval disjoint"
+    },
+    {
+      "ontology": "OWLTime",
+      "lookup_string": "time:Instant",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
