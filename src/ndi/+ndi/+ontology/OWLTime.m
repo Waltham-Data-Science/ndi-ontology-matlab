@@ -79,7 +79,7 @@ classdef OWLTime < ndi.ontology
             k = [];
             if isempty(key), return; end
             for r = 1:size(R, 1)
-                if strcmp(key, lower(R{r, 1}))
+                if strcmpi(key, R{r, 1})
                     k = r;
                     return;
                 end
