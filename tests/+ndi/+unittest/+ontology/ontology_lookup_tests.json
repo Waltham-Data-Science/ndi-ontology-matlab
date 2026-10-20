@@ -491,6 +491,13 @@
       "expected_name": "Organization"
     },
     {
+      "ontology": "schema",
+      "lookup_string": "schema:isPartOf",
+      "should_succeed": true,
+      "expected_id": "schema:isPartOf",
+      "expected_name": "isPartOf"
+    },
+    {
       "ontology": "IAO",
       "lookup_string": "IAO:NoSuchItem",
       "should_succeed": false,
