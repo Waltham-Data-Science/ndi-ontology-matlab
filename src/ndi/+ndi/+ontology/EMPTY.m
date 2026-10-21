@@ -6,6 +6,11 @@ classdef EMPTY < ndi.ontology
     properties (Constant)
         ONTOLOGY_PREFIX = 'EMPTY';
         OWL_URL_MAIN = 'https://raw.githubusercontent.com/Waltham-Data-Science/empty-ontology/main/empty-base.owl';
+        % The V2 branch (created from main, 2026-10-21) collects the terms
+        % of the NDI V2 work until every V2 branch merges to main, so a term
+        % minted for V2 is on V2 before it is on main (Jess Haley).
+        OWL_URL_V2_EDIT = 'https://raw.githubusercontent.com/Waltham-Data-Science/empty-ontology/V2/src/ontology/empty-edit.owl';
+        OWL_URL_V2 = 'https://raw.githubusercontent.com/Waltham-Data-Science/empty-ontology/V2/empty-base.owl';
         OWL_URL_DEV = 'https://raw.githubusercontent.com/Waltham-Data-Science/empty-ontology/development/src/ontology/empty-edit.owl';
     end
 
@@ -15,49 +20,61 @@ classdef EMPTY < ndi.ontology
         end 
 
         function [id, name, definition, synonyms] = lookupTermOrID(obj, term_or_id_or_name_fragment)
-            % lookupTermOrID - Search with failover from Main (XML) to Dev (Functional)
-            mainError = [];
-            try
-                [id, name, definition, synonyms] = obj.performRemoteLookup(obj.OWL_URL_MAIN, term_or_id_or_name_fragment);
-                return; 
-            catch ME
-                mainError = ME;
-            end
+            % lookupTermOrID - Search main, then V2, then development.
+            %   main's released empty-base.owl first; then the V2 branch's
+            %   edit file and its empty-base.owl (V2 terms are minted in the
+            %   edit file and released later); then development's edit file.
+            %   A source that does not exist (HTTP 404) is skipped.
+            options = weboptions('Timeout', 30, 'ContentType', 'text');
+            [id, name, definition, synonyms] = obj.lookupFromSources( ...
+                ndi.ontology.EMPTY.sourceUrls(), term_or_id_or_name_fragment, ...
+                @(url) webread(url, options));
+        end
 
-            % If we are here, MAIN lookup failed (TermNotFound or connection issue).
-            % Try the DEVELOPMENT branch, but only if it exists.
-
-            try
-                [id, name, definition, synonyms] = obj.performRemoteLookup(obj.OWL_URL_DEV, term_or_id_or_name_fragment);
-                return;
-            catch ME
-                % If DEV branch doesn't exist (404), skip it and return original error or a clean failure.
-                % GitHub raw URLs return "404: Not Found" for missing branches.
-                is404 = contains(ME.message, '404') || contains(ME.message, 'Not Found');
-
-                if is404
-                    if ~isempty(mainError), throw(mainError);
-                    else, error('ndi:ontology:EMPTY:LookupFailed', 'EMPTY lookup failed for "%s".', term_or_id_or_name_fragment);
+        function [id, name, definition, synonyms] = lookupFromSources(obj, urls, fragment, readFn)
+            % lookupFromSources - Look FRAGMENT up in each of URLS in turn.
+            %   READFN(url) returns the file's text, or errors (a missing
+            %   branch errors with "404"/"Not Found", and is skipped). The
+            %   first source holding the term answers. If none does, the
+            %   main source's error is rethrown when every other source was
+            %   missing; otherwise ndi:ontology:EMPTY:LookupFailed carries
+            %   each source's error as a cause. Public so the order can be
+            %   tested without the network.
+            errors = {};
+            for k = 1:numel(urls)
+                try
+                    content = readFn(urls{k});
+                    [id, name, definition, synonyms] = obj.parseContent(content, fragment);
+                    return;
+                catch ME
+                    is404 = contains(ME.message, '404') || contains(ME.message, 'Not Found');
+                    if ~is404
+                        errors{end+1} = ME; %#ok<AGROW>
                     end
                 end
-
-                % If it was some other error (e.g., TermNotFound in DEV), combine them
-                baseME = MException('ndi:ontology:EMPTY:LookupFailed', ...
-                    'EMPTY lookup failed for "%s" in both MAIN and DEVELOPMENT branches.', term_or_id_or_name_fragment);
-                if ~isempty(mainError), baseME = addCause(baseME, mainError); end
-                baseME = addCause(baseME, ME);
-                throw(baseME);
             end
-        end 
+            if numel(errors) == 1
+                throw(errors{1});
+            end
+            baseME = MException('ndi:ontology:EMPTY:LookupFailed', ...
+                'EMPTY lookup failed for "%s" in the main, V2 and development sources.', fragment);
+            for k = 1:numel(errors)
+                baseME = addCause(baseME, errors{k});
+            end
+            throw(baseME);
+        end
+    end
+
+    methods (Static)
+        function urls = sourceUrls()
+            % sourceUrls - The OWL files EMPTY lookups read, in order.
+            urls = {ndi.ontology.EMPTY.OWL_URL_MAIN, ndi.ontology.EMPTY.OWL_URL_V2_EDIT, ...
+                ndi.ontology.EMPTY.OWL_URL_V2, ndi.ontology.EMPTY.OWL_URL_DEV};
+        end
     end
 
     methods (Access = private)
-        function [id, name, definition, synonyms] = performRemoteLookup(obj, url, term_or_id_or_name_fragment)
-            id = ''; name = ''; definition = ''; synonyms = {};
-            
-            options = weboptions('Timeout', 30, 'ContentType', 'text');
-            owl_content = webread(url, options);
-            
+        function [id, name, definition, synonyms] = parseContent(obj, owl_content, term_or_id_or_name_fragment)
             % --- DETECT FORMAT ---
             if contains(owl_content, '<?xml') || contains(owl_content, '<rdf:RDF')
                 % Use the XML Parser logic
