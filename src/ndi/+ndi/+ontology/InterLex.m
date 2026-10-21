@@ -50,27 +50,105 @@ classdef InterLex < ndi.ontology
                      'A search by label needs the keyed SciCrunch API, which is not used.'], ...
                     char(term_or_id_or_name));
             end
-            url = [ndi.ontology.InterLex.IRI_BASE num '.jsonld'];
-            opts = weboptions('Timeout', 30, 'ContentType', 'text');
-            try
-                body = webread(url, opts);
-            catch ME
-                % an unknown id answers 500, not 404 (checked 2026-10-21)
-                if contains(ME.message, '404') || contains(ME.message, '500') || ...
-                        contains(ME.message, 'Not Found')
-                    error('ndi:ontology:InterLex:TermNotFound', ...
-                        'InterLex term ILX:%s not found (%s): %s', num, url, ME.message);
+            % The same record in two serializations, each asked for with and
+            % without explicit headers. From a GitHub-hosted runner the
+            % resolver answered "500 INTERNAL SERVER ERROR" to MATLAB's
+            % default .jsonld request (2026-10-21) while the same URL answered
+            % 200 elsewhere, so the other forms are tried before giving up.
+            base = [ndi.ontology.InterLex.IRI_BASE num];
+            attempts = { ...
+                [base '.jsonld'], {}; ...
+                [base '.jsonld'], {'Accept', 'application/ld+json'}; ...
+                [base '.ttl'],    {'Accept', 'text/turtle'}; ...
+                [base '.csv'],    {'Accept', 'text/csv'}};
+            failures = {};
+            for k = 1:size(attempts, 1)
+                url = attempts{k, 1};
+                opts = weboptions('Timeout', 30, 'ContentType', 'text', ...
+                    'UserAgent', 'ndi-ontology-matlab (https://github.com/Waltham-Data-Science/ndi-ontology-matlab)');
+                if ~isempty(attempts{k, 2})
+                    opts.HeaderFields = attempts{k, 2};
                 end
-                baseME = MException('ndi:ontology:InterLex:APIError', ...
-                    'Failed to fetch InterLex term ILX:%s from %s.', num, url);
-                baseME = addCause(baseME, ME);
-                throw(baseME);
+                try
+                    body = webread(url, opts);
+                catch ME
+                    failures{end+1} = sprintf('%s: %s', url, ME.message); %#ok<AGROW>
+                    continue;
+                end
+                if endsWith(url, '.ttl')
+                    [id, name, definition, synonyms] = ndi.ontology.InterLex.parseTurtle(body, num);
+                elseif endsWith(url, '.csv')
+                    [id, name, definition, synonyms] = ndi.ontology.InterLex.parseCsv(body, num);
+                else
+                    [id, name, definition, synonyms] = ndi.ontology.InterLex.parseRecord(body, num);
+                end
+                return;
             end
-            [id, name, definition, synonyms] = ndi.ontology.InterLex.parseRecord(body, num);
+            % an unknown id answers 500, not 404 (checked 2026-10-21), so a
+            % miss and a server fault look alike here; both are reported
+            error('ndi:ontology:InterLex:TermNotFound', ...
+                'InterLex term ILX:%s could not be read: %s', num, strjoin(failures, ' | '));
         end % function lookupTermOrID
     end % methods
 
     methods (Static)
+        function [id, name, definition, synonyms] = parseTurtle(body, num)
+            % PARSETURTLE - ID, label, definition and synonyms from the
+            %   Turtle record http://uri.interlex.org/base/ilx_<NUM>.ttl: the
+            %   statements of the block that opens 'ILX:<NUM> a owl:Class'.
+            body = char(body);
+            start = regexp(body, ['(?m)^ILX:' num '\s+a\s+owl:Class'], 'once');
+            if isempty(start)
+                error('ndi:ontology:InterLex:TermNotFound', ...
+                    'InterLex term ILX:%s has no class record.', num);
+            end
+            stop = regexp(body(start:end), '\s\.\s*(\n|$)', 'once');
+            if isempty(stop)
+                stop = numel(body) - start + 1;
+            end
+            block = body(start:start + stop - 1);
+            name = ndi.ontology.InterLex.turtleValues(block, 'rdfs:label');
+            if isempty(name)
+                error('ndi:ontology:InterLex:TermNotFound', ...
+                    'InterLex term ILX:%s has no label.', num);
+            end
+            id = ['ILX:' num];
+            name = name{1};
+            d = ndi.ontology.InterLex.turtleValues(block, 'definition:');
+            definition = '';
+            if ~isempty(d)
+                definition = d{1};
+            end
+            synonyms = ndi.ontology.InterLex.turtleValues(block, 'NIFRID:synonym');
+        end
+
+        function [id, name, definition, synonyms] = parseCsv(body, num)
+            % PARSECSV - ID, label, definition and synonyms from the CSV
+            %   record http://uri.interlex.org/base/ilx_<NUM>.csv (header
+            %   iri,label,synonyms,definition,...; one row per class).
+            lines = splitlines(strtrim(char(body)));
+            iri = [ndi.ontology.InterLex.IRI_BASE num];
+            if numel(lines) < 2
+                error('ndi:ontology:InterLex:TermNotFound', 'InterLex term ILX:%s has no row.', num);
+            end
+            header = strsplit(lines{1}, ',');
+            col = @(n) find(strcmp(header, n), 1);
+            for k = 2:numel(lines)
+                cells = ndi.ontology.InterLex.csvCells(lines{k});
+                if numel(cells) >= numel(header) && strcmp(cells{col('iri')}, iri)
+                    id = ['ILX:' num];
+                    name = cells{col('label')};
+                    definition = cells{col('definition')};
+                    synonyms = {};
+                    if ~isempty(cells{col('synonyms')})
+                        synonyms = strsplit(cells{col('synonyms')}, '|');
+                    end
+                    return;
+                end
+            end
+            error('ndi:ontology:InterLex:TermNotFound', 'InterLex term ILX:%s has no row.', num);
+        end
+
         function num = localNumber(s)
             % LOCALNUMBER - The digits of an InterLex ID, or '' if S is not one.
             %   Accepts '0739413', 'ilx_0739413' and 'ILX_0739413'.
@@ -131,4 +209,50 @@ classdef InterLex < ndi.ontology
             end
         end
     end % methods (Static)
+
+    methods (Static, Access = private)
+        function v = turtleValues(block, predicate)
+            % every quoted literal following PREDICATE in a Turtle block
+            % (a predicate's objects are separated by commas)
+            v = {};
+            tok = regexp(block, [regexptranslate('escape', predicate) ...
+                '\s+((?:"(?:[^"\\]|\\.)*"(?:@\w+)?\s*,?\s*)+)'], 'tokens', 'once');
+            if isempty(tok)
+                return;
+            end
+            lits = regexp(tok{1}, '"((?:[^"\\]|\\.)*)"', 'tokens');
+            v = cellfun(@(c) strrep(strrep(c{1}, '\"', '"'), '\\', '\'), lits, ...
+                'UniformOutput', false);
+        end
+
+        function c = csvCells(line)
+            % split one CSV line, honouring double-quoted fields
+            c = {};
+            cur = '';
+            q = false;
+            k = 1;
+            while k <= numel(line)
+                ch = line(k);
+                if q
+                    if ch == '"' && k < numel(line) && line(k + 1) == '"'
+                        cur(end+1) = '"'; %#ok<AGROW>
+                        k = k + 1;
+                    elseif ch == '"'
+                        q = false;
+                    else
+                        cur(end+1) = ch; %#ok<AGROW>
+                    end
+                elseif ch == '"'
+                    q = true;
+                elseif ch == ','
+                    c{end+1} = cur; %#ok<AGROW>
+                    cur = '';
+                else
+                    cur(end+1) = ch; %#ok<AGROW>
+                end
+                k = k + 1;
+            end
+            c{end+1} = cur;
+        end
+    end % methods (Static, Access = private)
 end % classdef InterLex
