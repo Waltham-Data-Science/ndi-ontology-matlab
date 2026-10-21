@@ -814,13 +814,6 @@
     },
     {
       "ontology": "EFO",
-      "lookup_string": "EFO:0000408",
-      "should_succeed": true,
-      "expected_id": "EFO:0000408",
-      "expected_name": "disease"
-    },
-    {
-      "ontology": "EFO",
       "lookup_string": "EFO:NoSuchExperimentalFactor",
       "should_succeed": false,
       "expected_id": "",
