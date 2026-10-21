@@ -797,6 +797,76 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:0000001",
+      "should_succeed": true,
+      "expected_id": "EFO:0000001",
+      "expected_name": "experimental factor"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:experimental factor",
+      "should_succeed": true,
+      "expected_id": "EFO:0000001",
+      "expected_name": "experimental factor"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:0000408",
+      "should_succeed": true,
+      "expected_id": "EFO:0000408",
+      "expected_name": "disease"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:NoSuchExperimentalFactor",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C3262",
+      "should_succeed": true,
+      "expected_id": "NCIT:C3262",
+      "expected_name": "Neoplasm"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C12434",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12434",
+      "expected_name": "Blood"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:NoSuchThesaurusTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:22298006",
+      "should_succeed": true,
+      "expected_id": "SNOMED:22298006",
+      "expected_name": "Myocardial infarction"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:Myocardial infarction",
+      "should_succeed": true,
+      "expected_id": "SNOMED:22298006",
+      "expected_name": "Myocardial infarction"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:NoSuchClinicalConcept",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
