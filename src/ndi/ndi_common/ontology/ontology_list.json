@@ -83,6 +83,7 @@
     {"prefix": "format", "ontology_name": "EDAM"},
     {"prefix": "IAO", "ontology_name": "IAO"},
     {"prefix": "schema", "ontology_name": "SchemaOrg"},
+    {"prefix": "spdx", "ontology_name": "SPDX"},
     {"prefix": "STATO", "ontology_name": "STATO"}
   ],
   "Ontologies": [
@@ -211,6 +212,11 @@
       "name": "SchemaOrg",
       "homepage": "https://schema.org",
       "api_url": "https://schema.org/"
+    },
+    {
+      "name": "SPDX",
+      "homepage": "https://spdx.org/licenses/",
+      "api_url": "https://spdx.org/licenses/"
     },
     {
       "name": "STATO",

@@ -25,6 +25,7 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `NDIC` | NDI Controlled Vocabulary (local) |
 | `WBStrain` / `wormbase` | [WormBase](https://wormbase.org) strains, read from [WormMine](https://wormmine.alliancegenome.org) |
 | `STATO` | [Statistics Ontology](http://stato-ontology.org/) |
+| `spdx` | [SPDX License List](https://spdx.org/licenses/), e.g. `spdx:CC-BY-4.0` (identifier or full licence name) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
 
@@ -132,7 +133,7 @@ src/ndi/
     +ontology/              % Ontology-specific subclasses
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
-      OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m,
+      OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m,
       SNOMED.m, STATO.m, Uberon.m, WormBase.m
     +common/
       PathConstants.m       % Path constants

@@ -512,6 +512,41 @@
       "expected_name": ""
     },
     {
+      "ontology": "spdx",
+      "lookup_string": "spdx:CC-BY-4.0",
+      "should_succeed": true,
+      "expected_id": "spdx:CC-BY-4.0",
+      "expected_name": "Creative Commons Attribution 4.0 International"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "SPDX:MIT",
+      "should_succeed": true,
+      "expected_id": "spdx:MIT",
+      "expected_name": "MIT License"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:cc0-1.0",
+      "should_succeed": true,
+      "expected_id": "spdx:CC0-1.0",
+      "expected_name": "Creative Commons Zero v1.0 Universal"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:Creative Commons Attribution 4.0 International",
+      "should_succeed": true,
+      "expected_id": "spdx:CC-BY-4.0",
+      "expected_name": "Creative Commons Attribution 4.0 International"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:NoSuchLicence-9.9",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "STATO",
       "lookup_string": "STATO:0000700",
       "should_succeed": true,
