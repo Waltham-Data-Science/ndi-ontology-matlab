@@ -874,6 +874,90 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C12727",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12727",
+      "expected_name": "Heart"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:Heart",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12727",
+      "expected_name": "Heart"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C99999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:80891009",
+      "should_succeed": true,
+      "expected_id": "SNOMED:80891009",
+      "expected_name": "Heart structure"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:Heart structure",
+      "should_succeed": true,
+      "expected_id": "SNOMED:80891009",
+      "expected_name": "Heart structure"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:999999999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:0002677",
+      "should_succeed": true,
+      "expected_id": "EFO:0002677",
+      "expected_name": "saline"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:saline",
+      "should_succeed": true,
+      "expected_id": "EFO:0002677",
+      "expected_name": "saline"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:9999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }
