@@ -84,6 +84,9 @@
     {"prefix": "IAO", "ontology_name": "IAO"},
     {"prefix": "schema", "ontology_name": "SchemaOrg"},
     {"prefix": "spdx", "ontology_name": "SPDX"},
+    {"prefix": "interlex", "ontology_name": "InterLex"},
+    {"prefix": "ILX", "ontology_name": "InterLex"},
+    {"prefix": "wikidata", "ontology_name": "Wikidata"},
     {"prefix": "STATO", "ontology_name": "STATO"}
   ],
   "Ontologies": [
@@ -212,6 +215,16 @@
       "name": "SchemaOrg",
       "homepage": "https://schema.org",
       "api_url": "https://schema.org/"
+    },
+    {
+      "name": "InterLex",
+      "homepage": "https://scicrunch.org/scicrunch/interlex/dashboard",
+      "api_url": "http://uri.interlex.org/base/"
+    },
+    {
+      "name": "Wikidata",
+      "homepage": "https://www.wikidata.org",
+      "api_url": "https://www.wikidata.org/w/api.php"
     },
     {
       "name": "SPDX",

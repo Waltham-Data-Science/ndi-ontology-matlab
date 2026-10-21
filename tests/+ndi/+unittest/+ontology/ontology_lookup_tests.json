@@ -512,6 +512,41 @@
       "expected_name": ""
     },
     {
+      "ontology": "interlex",
+      "lookup_string": "ILX:0739413",
+      "should_succeed": true,
+      "expected_id": "ILX:0739413",
+      "expected_name": "behavioral approach"
+    },
+    {
+      "ontology": "interlex",
+      "lookup_string": "interlex:ilx_0739413",
+      "should_succeed": true,
+      "expected_id": "ILX:0739413",
+      "expected_name": "behavioral approach"
+    },
+    {
+      "ontology": "interlex",
+      "lookup_string": "ILX:behavior",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "wikidata",
+      "lookup_string": "wikidata:Q30",
+      "should_succeed": true,
+      "expected_id": "wikidata:Q30",
+      "expected_name": "United States"
+    },
+    {
+      "ontology": "wikidata",
+      "lookup_string": "wikidata:Q458",
+      "should_succeed": true,
+      "expected_id": "wikidata:Q458",
+      "expected_name": "European Union"
+    },
+    {
       "ontology": "spdx",
       "lookup_string": "spdx:CC-BY-4.0",
       "should_succeed": true,
