@@ -25,6 +25,9 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `NDIC` | NDI Controlled Vocabulary (local) |
 | `WBStrain` / `wormbase` | [WormBase](https://wormbase.org) strains, read from [WormMine](https://wormmine.alliancegenome.org) |
 | `STATO` | [Statistics Ontology](http://stato-ontology.org/) |
+| `spdx` | [SPDX License List](https://spdx.org/licenses/), e.g. `spdx:CC-BY-4.0` (identifier or full licence name) |
+| `ILX` / `interlex` | [InterLex](https://scicrunch.org/scicrunch/interlex/dashboard), e.g. `ILX:0739413`, read from each term's public JSON-LD record (`http://uri.interlex.org/base/ilx_<n>.jsonld`; the SciCrunch API needs a key). IDs only |
+| `wikidata` | [Wikidata](https://www.wikidata.org) items, e.g. `wikidata:Q30`, via the public `wbgetentities` API (ID or English label) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
 
@@ -132,7 +135,7 @@ src/ndi/
     +ontology/              % Ontology-specific subclasses
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
-      OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m,
+      InterLex.m, OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m, Wikidata.m,
       SNOMED.m, STATO.m, Uberon.m, WormBase.m
     +common/
       PathConstants.m       % Path constants

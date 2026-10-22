@@ -67,43 +67,82 @@ classdef SchemaOrg < ndi.ontology
                     'Schema.org term "%s" not found in the response body.', term_name);
             end
 
-            % The response is a JSON-LD @graph document that contains the
-            % requested type/property AND all of its properties / related
-            % terms.  We must find the specific entry whose @id matches.
+            % schema.org answers this request with an HTML term page, not
+            % bare JSON-LD: the term's JSON-LD is embedded in the page in a
+            % <script type="application/ld+json"> block. parseResponse reads
+            % the label and comment from either form.
             id = ['schema:' term_name];
-            name       = term_name;   % safe fallback
-            definition = '';
-
-            try
-                jdata = jsondecode(json_str);
-
-                % Locate the entry in @graph (or the top-level object) that
-                % corresponds to the requested term.
-                term_item = ndi.ontology.SchemaOrg.findGraphEntry( ...
-                    jdata, target_compact, target_full);
-
-                if ~isempty(term_item)
-                    % Extract the label.  The JSON-LD field is "rdfs:label"
-                    % which jsondecode encodes as rdfsx003Alabel in R2021+
-                    % (replacing ':' with x003A).  We search by keyword to be
-                    % robust across MATLAB versions.
-                    lbl = ndi.ontology.SchemaOrg.extractByKeyword(term_item, 'label', '');
-                    if ~isempty(lbl), name = lbl; end
-
-                    % Extract the description/comment.
-                    definition = ndi.ontology.SchemaOrg.extractByKeyword( ...
-                        term_item, 'comment', '');
-                end
-            catch
-                % If jsondecode or graph traversal fails, fall back to the
-                % term_name as label — the ID is already set correctly above.
-            end
-
+            [name, definition] = ndi.ontology.SchemaOrg.parseResponse(json_str, term_name);
             synonyms = {};
 
         end % function lookupTermOrID
 
     end % methods
+
+    methods (Static)
+
+        function [name, definition] = parseResponse(body, term_name)
+            % PARSERESPONSE - The label and comment of a schema.org term.
+            %
+            %   [NAME, DEFINITION] = ndi.ontology.SchemaOrg.parseResponse(BODY, TERM_NAME)
+            %
+            %   BODY is what schema.org returns for https://schema.org/<TERM_NAME>:
+            %   either a JSON-LD document, or (as the server sends today, even
+            %   when JSON-LD is requested) an HTML term page that embeds the
+            %   term's JSON-LD in a <script type="application/ld+json"> block.
+            %   For a type the embedded document is an @graph holding the type
+            %   and its properties; for a property it is the property itself.
+            %
+            %   NAME is the entry's rdfs:label and DEFINITION its rdfs:comment.
+            %   If no entry for TERM_NAME can be read, NAME falls back to
+            %   TERM_NAME and DEFINITION to ''. Public so the parsing can be
+            %   tested without the network.
+            arguments
+                body {mustBeText}
+                term_name {mustBeTextScalar, mustBeNonzeroLengthText}
+            end
+            body = char(body);
+            term_name = char(term_name);
+            name = term_name;   % safe fallback
+            definition = '';
+
+            target_compact = ['schema:' term_name];
+            target_full    = ['https://schema.org/' term_name];
+
+            % Candidate JSON-LD documents: the body itself if it is JSON,
+            % otherwise every embedded ld+json script block.
+            if startsWith(strtrim(body), {'{', '['})
+                blocks = {body};
+            else
+                blocks = regexp(body, ...
+                    '<script[^>]*type\s*=\s*"application/ld\+json"[^>]*>(.*?)</script>', ...
+                    'tokens', 'ignorecase');
+                blocks = cellfun(@(t) t{1}, blocks, 'UniformOutput', false);
+            end
+
+            for b = 1:numel(blocks)
+                try
+                    jdata = jsondecode(blocks{b});
+                catch
+                    continue;   % not decodable JSON; try the next block
+                end
+                if ~isstruct(jdata), continue; end
+                term_item = ndi.ontology.SchemaOrg.findGraphEntry( ...
+                    jdata, target_compact, target_full);
+                if isempty(term_item), continue; end
+
+                % The JSON-LD fields are "rdfs:label" / "rdfs:comment",
+                % which jsondecode renames (e.g. rdfs_label); search by
+                % keyword to be robust across MATLAB versions.
+                lbl = ndi.ontology.SchemaOrg.extractByKeyword(term_item, 'label', '');
+                if ~isempty(lbl), name = lbl; end
+                definition = ndi.ontology.SchemaOrg.extractByKeyword( ...
+                    term_item, 'comment', '');
+                return;
+            end
+        end % function parseResponse
+
+    end % methods (Static)
 
     methods (Static, Access = private)
 
