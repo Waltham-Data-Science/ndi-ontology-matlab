@@ -369,16 +369,36 @@ methods (Static)
             error('ndi:ontology:performIriLookup:EncodingError', 'Failed to URL encode IRI "%s": %s', term_iri, ME_encode.message);
         end
         ols_base_url = 'https://www.ebi.ac.uk/ols4/api/ontologies/';
-        url = [ols_base_url ontology_name_ols '/terms/' encoded_iri_twice];
         options = weboptions('ContentType', 'json', 'Timeout', 30, 'HeaderFields', {'Accept', 'application/json'});
+        % OLS serves classes under /terms/, relations (object and annotation
+        % properties, e.g. RO:0002350 'member of') under /properties/ and
+        % individuals under /individuals/. A 404 from one is tried at the next.
+        endpoints = {'terms', 'properties', 'individuals'};
+        data = [];
+        for e = 1:numel(endpoints)
+            url = [ols_base_url ontology_name_ols '/' endpoints{e} '/' encoded_iri_twice];
+            try
+                data = webread(url, options);
+                break;
+            catch ME
+                is404 = contains(ME.identifier, 'MATLAB:webservices:HTTP') && (contains(ME.message, '404') || contains(ME.message, 'Not Found'));
+                if is404 && e < numel(endpoints), continue; end
+                if contains(ME.message, 'Timeout'), error('ndi:ontology:performIriLookup:APITimeout', 'OLS Term API timeout for IRI "%s", ontology "%s".', term_iri, ontology_name_ols);
+                elseif is404, error('ndi:ontology:performIriLookup:IRINotFound', 'IRI "%s" not found via OLS API (as a term, property or individual) for ontology "%s" (404 Error).', term_iri, ontology_name_ols);
+                else, error('ndi:ontology:performIriLookup:APIError', 'OLS Term API request failed for IRI "%s", ontology "%s": %s', term_iri, ontology_name_ols, ME.message); end
+            end
+        end
         try
-            data = webread(url, options);
             if ~isstruct(data) || isempty(fieldnames(data))
                  error('ndi:ontology:performIriLookup:InvalidResponse', 'Received invalid/empty response from OLS Term API for ontology "%s", IRI "%s".', ontology_name_ols, term_iri);
             end
             if isfield(data, 'obo_id') && ~isempty(data.obo_id) && startsWith(data.obo_id, [ontology_prefix ':'], 'IgnoreCase', true), id = char(data.obo_id);
             elseif isfield(data, 'short_form') && ~isempty(data.short_form), id_temp = char(data.short_form); expected_prefix_us = [ontology_prefix '_']; if startsWith(id_temp, expected_prefix_us, 'IgnoreCase', true), id = strrep(id_temp, '_', ':'); else, if ~isempty(regexp(id_temp,'^\d+$','once')), id = [ontology_prefix ':' id_temp]; elseif startsWith(id_temp, [ontology_prefix ':'], 'IgnoreCase', true), id = id_temp; else, id = ''; end; end
             else, id = ''; end
+            % Fallback: take the ID from the IRI's last segment when it is
+            % PREFIX_LOCALID (OLS reports BFO:0000050 'part of' with obo_id
+            % 'RO:' and short_form 'RO_'; its IRI .../obo/BFO_0000050 is right).
+            if isempty(id), iri_tok = regexp(term_iri, ['[/#]' ontology_prefix '_(\w+)$'], 'tokens', 'once', 'ignorecase'); if ~isempty(iri_tok), id = [ontology_prefix ':' iri_tok{1}]; end; end
             % Fallback: if ID is still empty but obo_id exists (e.g., EDAM
             % uses sub-ontology prefixes like 'format:1929' instead of
             % 'EDAM:1929'), use the raw obo_id as a last resort.
@@ -390,9 +410,7 @@ methods (Static)
             synonyms = {};
             if isfield(data, 'obo_synonym') && ~isempty(data.obo_synonym) && isstruct(data.obo_synonym), syn_field_name = ''; if isfield(data.obo_synonym(1), 'name'), syn_field_name = 'name'; elseif isfield(data.obo_synonym(1), 'label'), syn_field_name = 'label'; end; if ~isempty(syn_field_name), syn_names = arrayfun(@(x) char(x.(syn_field_name)), data.obo_synonym, 'UniformOutput', false); synonyms = syn_names(~cellfun('isempty', syn_names)); if isempty(synonyms), synonyms = {}; end; end; end
         catch ME
-            if contains(ME.message, 'Timeout'), error('ndi:ontology:performIriLookup:APITimeout', 'OLS Term API timeout for IRI "%s", ontology "%s".', term_iri, ontology_name_ols);
-            elseif contains(ME.identifier, 'MATLAB:webservices:HTTP') && (contains(ME.message, '404') || contains(ME.message, 'Not Found')), error('ndi:ontology:performIriLookup:IRINotFound', 'IRI "%s" not found via OLS Term API for ontology "%s" (404 Error).', term_iri, ontology_name_ols);
-            elseif ismember(ME.identifier, {'ndi:ontology:performIriLookup:EncodingError', 'ndi:ontology:performIriLookup:InvalidResponse'}), rethrow(ME);
+            if ismember(ME.identifier, {'ndi:ontology:performIriLookup:InvalidResponse'}), rethrow(ME);
             else, error('ndi:ontology:performIriLookup:APIError', 'OLS Term API request failed for IRI "%s", ontology "%s": %s', term_iri, ontology_name_ols, ME.message); end
         end
     end % function performIriLookup
@@ -452,6 +470,9 @@ methods (Static)
                             match_mask = arrayfun(@(x) isfield(x,'label') && strcmpi(x.label, search_query), docs_array);
                         end
                         match_indices = find(match_mask);
+                        % One IRI reported more than once (e.g. as a class and
+                        % as an individual) is one term.
+                        match_indices = ndi.ontology.firstPerIRI_(docs_array, match_indices);
 
                         if numel(match_indices) == 1
                             if iscell(docs_array)
@@ -469,7 +490,18 @@ methods (Static)
                         else
                             error('ndi:ontology:searchOLSAndPerformIRILookup:NotUnique', 'Term matching %s resulted in %d exact matches (case-insensitive) in "%s". Requires unique match.', lookup_type_msg, numel(match_indices), ontology_name_ols);
                         end
-                     else, error('ndi:ontology:searchOLSAndPerformIRILookup:NotUnique', 'Term matching %s yielded %d results in "%s" (expected 1 for ID search).', lookup_type_msg, numFound, ontology_name_ols); end
+                     else
+                        % An ID search can return one IRI more than once: OLS
+                        % lists UO:0000196 'pH' as a class and as an individual.
+                        docs_array = search_response.response.docs;
+                        unique_idx = ndi.ontology.firstPerIRI_(docs_array, 1:numel(docs_array));
+                        if numel(unique_idx) == 1 && numel(docs_array) == numFound
+                            if iscell(docs_array), doc = docs_array{unique_idx}; else, doc = docs_array(unique_idx); end
+                            term_iri = char(doc.iri);
+                        else
+                            error('ndi:ontology:searchOLSAndPerformIRILookup:NotUnique', 'Term matching %s yielded %d results in "%s" (expected 1 for ID search).', lookup_type_msg, numFound, ontology_name_ols);
+                        end
+                     end
                 end
             else, error('ndi:ontology:searchOLSAndPerformIRILookup:InvalidSearchResponse', 'Invalid search response structure from OLS for %s in "%s".', lookup_type_msg, ontology_name_ols); end
         catch ME
@@ -644,6 +676,22 @@ methods (Static)
 end % methods (Static)
 methods (Static, Access = private)
     % --- Private Static Helpers ---
+    function keep = firstPerIRI_(docs_array, indices)
+        % FIRSTPERIRI_ - The first of INDICES for each distinct IRI in an OLS
+        %   search result DOCS_ARRAY (a struct array or a cell array of
+        %   structs). An entry without an IRI is kept as it is.
+        keep = [];
+        seen = {};
+        for k = indices(:)'
+            if iscell(docs_array), d = docs_array{k}; else, d = docs_array(k); end
+            if isfield(d, 'iri') && ~isempty(d.iri)
+                this_iri = char(d.iri);
+                if any(strcmp(seen, this_iri)), continue; end
+                seen{end+1} = this_iri; %#ok<AGROW>
+            end
+            keep(end+1) = k; %#ok<AGROW>
+        end
+    end % function firstPerIRI_
     function data = loadOntologyJSONData_(forceReload)
         % LOADONTOLOGYJSONDATA_ - Loads ontology list from JSON, uses persistent cache.
         persistent ontologyDataCache
