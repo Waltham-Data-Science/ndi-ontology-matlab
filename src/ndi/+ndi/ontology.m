@@ -437,6 +437,14 @@ methods (Static)
         if strcmp(search_field, 'obo_id'), params = [params, {'exact', 'true'}]; end % Only exact for ID search
         try
             search_response = webread(ols_search_url, params{:}, searchOptions);
+            % OLS holds some terms with an empty obo_id (SNOMED, since its
+            % 2026-10-21 reload: obo_id '', short_form 'SNOMED_80891009'), so
+            % an ID that no obo_id matches is searched again as PREFIX_ID in
+            % short_form; performIriLookup then reads the ID from short_form.
+            if strcmp(search_field, 'obo_id') && isfield(search_response, 'response') && isfield(search_response.response, 'numFound') && search_response.response.numFound == 0
+                sf_params = {'q', strrep(search_query, ':', '_'), 'ontology', ontology_name_ols, 'queryFields', 'short_form', 'exact', 'true'};
+                search_response = webread(ols_search_url, sf_params{:}, searchOptions);
+            end
             if isfield(search_response, 'response') && isfield(search_response.response, 'numFound')
                 numFound = search_response.response.numFound;
                 if numFound == 1, doc = search_response.response.docs(1); if strcmp(search_field,'label'), if ~(isfield(doc,'label') && strcmpi(doc.label, search_query)), label_found = '[Label Missing]'; if isfield(doc,'label'), label_found = doc.label; end; error('ndi:ontology:searchOLSAndPerformIRILookup:MismatchOnSingleResult','Search for name "%s" returned single result with non-matching label ("%s").', search_query, label_found); end; end; if isfield(doc, 'iri') && ~isempty(doc.iri), term_iri = char(doc.iri); else, error('ndi:ontology:searchOLSAndPerformIRILookup:MissingIRIInSearchResult','Found unique term for %s, but could not extract IRI.', lookup_type_msg); end
