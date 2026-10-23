@@ -1035,6 +1035,265 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "BAO",
+      "lookup_string": "BAO:0000089",
+      "should_succeed": true,
+      "expected_id": "BAO:0000089",
+      "expected_name": "wild type"
+    },
+    {
+      "ontology": "BAO",
+      "lookup_string": "BAO:wild type",
+      "should_succeed": true,
+      "expected_id": "BAO:0000089",
+      "expected_name": "wild type"
+    },
+    {
+      "ontology": "BAO",
+      "lookup_string": "BAO:NoSuchAssay",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "GO",
+      "lookup_string": "GO:0001508",
+      "should_succeed": true,
+      "expected_id": "GO:0001508",
+      "expected_name": "action potential"
+    },
+    {
+      "ontology": "GO",
+      "lookup_string": "GO:action potential",
+      "should_succeed": true,
+      "expected_id": "GO:0001508",
+      "expected_name": "action potential"
+    },
+    {
+      "ontology": "GO",
+      "lookup_string": "GO:NoSuchProcess",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "XCO",
+      "lookup_string": "XCO:0000099",
+      "should_succeed": true,
+      "expected_id": "XCO:0000099",
+      "expected_name": "control condition"
+    },
+    {
+      "ontology": "XCO",
+      "lookup_string": "XCO:0000000",
+      "should_succeed": true,
+      "expected_id": "XCO:0000000",
+      "expected_name": "experimental condition"
+    },
+    {
+      "ontology": "XCO",
+      "lookup_string": "XCO:control condition",
+      "should_succeed": true,
+      "expected_id": "XCO:0000099",
+      "expected_name": "control condition"
+    },
+    {
+      "ontology": "XCO",
+      "lookup_string": "XCO:NoSuchCondition",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "BFO",
+      "lookup_string": "BFO:0000050",
+      "should_succeed": true,
+      "expected_id": "BFO:0000050",
+      "expected_name": "part of"
+    },
+    {
+      "ontology": "BFO",
+      "lookup_string": "BFO:0000040",
+      "should_succeed": true,
+      "expected_id": "BFO:0000040",
+      "expected_name": "material entity"
+    },
+    {
+      "ontology": "BFO",
+      "lookup_string": "BFO:material entity",
+      "should_succeed": true,
+      "expected_id": "BFO:0000040",
+      "expected_name": "material entity"
+    },
+    {
+      "ontology": "BFO",
+      "lookup_string": "BFO:9999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "RO",
+      "lookup_string": "RO:0001025",
+      "should_succeed": true,
+      "expected_id": "RO:0001025",
+      "expected_name": "located in"
+    },
+    {
+      "ontology": "RO",
+      "lookup_string": "RO:0002350",
+      "should_succeed": true,
+      "expected_id": "RO:0002350",
+      "expected_name": "member of"
+    },
+    {
+      "ontology": "RO",
+      "lookup_string": "RO:member of",
+      "should_succeed": true,
+      "expected_id": "RO:0002350",
+      "expected_name": "member of"
+    },
+    {
+      "ontology": "RO",
+      "lookup_string": "RO:0002437",
+      "should_succeed": true,
+      "expected_id": "RO:0002437",
+      "expected_name": "biotically interacts with"
+    },
+    {
+      "ontology": "RO",
+      "lookup_string": "RO:NoSuchRelation",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "ENVO",
+      "lookup_string": "ENVO:01003004",
+      "should_succeed": true,
+      "expected_id": "ENVO:01003004",
+      "expected_name": "derives from part of"
+    },
+    {
+      "ontology": "ENVO",
+      "lookup_string": "ENVO:NoSuchEnvironment",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SIO",
+      "lookup_string": "SIO:000497",
+      "should_succeed": true,
+      "expected_id": "SIO:000497",
+      "expected_name": "is version of"
+    },
+    {
+      "ontology": "SIO",
+      "lookup_string": "SIO:is version of",
+      "should_succeed": true,
+      "expected_id": "SIO:000497",
+      "expected_name": "is version of"
+    },
+    {
+      "ontology": "SIO",
+      "lookup_string": "SIO:NoSuchSIOTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "COB",
+      "lookup_string": "COB:0000022",
+      "should_succeed": true,
+      "expected_id": "COB:0000022",
+      "expected_name": "organism"
+    },
+    {
+      "ontology": "COB",
+      "lookup_string": "COB:0001300",
+      "should_succeed": true,
+      "expected_id": "COB:0001300",
+      "expected_name": "device"
+    },
+    {
+      "ontology": "COB",
+      "lookup_string": "COB:organism",
+      "should_succeed": true,
+      "expected_id": "COB:0000022",
+      "expected_name": "organism"
+    },
+    {
+      "ontology": "COB",
+      "lookup_string": "COB:NoSuchCoreTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "UO",
+      "lookup_string": "UO:0000196",
+      "should_succeed": true,
+      "expected_id": "UO:0000196",
+      "expected_name": "pH"
+    },
+    {
+      "ontology": "UO",
+      "lookup_string": "UO:pH",
+      "should_succeed": true,
+      "expected_id": "UO:0000196",
+      "expected_name": "pH"
+    },
+    {
+      "ontology": "UO",
+      "lookup_string": "UO:NoSuchUnit",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "PROV",
+      "lookup_string": "prov:wasDerivedFrom",
+      "should_succeed": true,
+      "expected_id": "prov:wasDerivedFrom",
+      "expected_name": "wasDerivedFrom"
+    },
+    {
+      "ontology": "PROV",
+      "lookup_string": "prov:was derived from",
+      "should_succeed": true,
+      "expected_id": "prov:wasDerivedFrom",
+      "expected_name": "wasDerivedFrom"
+    },
+    {
+      "ontology": "PROV",
+      "lookup_string": "prov:NoSuchProvTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "OWL",
+      "lookup_string": "owl:sameAs",
+      "should_succeed": true,
+      "expected_id": "owl:sameAs",
+      "expected_name": "sameAs"
+    },
+    {
+      "ontology": "OWL",
+      "lookup_string": "owl:same as",
+      "should_succeed": true,
+      "expected_id": "owl:sameAs",
+      "expected_name": "sameAs"
+    },
+    {
+      "ontology": "OWL",
+      "lookup_string": "owl:NoSuchOwlTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }

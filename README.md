@@ -25,6 +25,17 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `NDIC` | NDI Controlled Vocabulary (local) |
 | `WBStrain` / `wormbase` | [WormBase](https://wormbase.org) strains, read from [WormMine](https://wormmine.alliancegenome.org) |
 | `STATO` | [Statistics Ontology](http://stato-ontology.org/) |
+| `RO` | [Relation Ontology](http://obofoundry.org/ontology/ro.html) (relations, served by OLS as properties) |
+| `BFO` | [Basic Formal Ontology](http://obofoundry.org/ontology/bfo.html); BFO relations such as `BFO:0000050` (part of) are read from RO |
+| `COB` | [Core Ontology for Biology and Biomedicine](http://obofoundry.org/ontology/cob.html) |
+| `XCO` | [Experimental Condition Ontology](http://obofoundry.org/ontology/xco.html) |
+| `BAO` | [BioAssay Ontology](http://www.bioassayontology.org/) |
+| `GO` | [Gene Ontology](http://obofoundry.org/ontology/go.html) |
+| `ENVO` | [Environment Ontology](http://obofoundry.org/ontology/envo.html) |
+| `SIO` | [Semanticscience Integrated Ontology](https://github.com/MaastrichtU-IDS/semanticscience), e.g. `SIO:000497` |
+| `UO` | [Units of Measurement Ontology](http://obofoundry.org/ontology/uo.html) |
+| `prov` | [PROV-O](https://www.w3.org/TR/prov-o/), e.g. `prov:wasDerivedFrom` (local table of PROV-O's core terms) |
+| `owl` | [OWL 2](https://www.w3.org/TR/owl2-overview/), e.g. `owl:sameAs` (local table) |
 | `spdx` | [SPDX License List](https://spdx.org/licenses/), e.g. `spdx:CC-BY-4.0` (identifier or full licence name) |
 | `ILX` / `interlex` | [InterLex](https://scicrunch.org/scicrunch/interlex/dashboard), e.g. `ILX:0739413`, read from each term's public JSON-LD record (`http://uri.interlex.org/base/ilx_<n>.jsonld`; the SciCrunch API needs a key). IDs only |
 | `wikidata` | [Wikidata](https://www.wikidata.org) items, e.g. `wikidata:Q30`, via the public `wbgetentities` API (ID or English label) |
@@ -136,7 +147,9 @@ src/ndi/
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
       InterLex.m, OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m, Wikidata.m,
-      SNOMED.m, STATO.m, Uberon.m, WormBase.m
+      SNOMED.m, STATO.m, Uberon.m, WormBase.m,
+      RO.m, BFO.m, COB.m, XCO.m, BAO.m, GO.m, ENVO.m, SIO.m, UO.m,
+      PROV.m, OWL.m
     +common/
       PathConstants.m       % Path constants
     +fun/
