@@ -87,7 +87,18 @@
     {"prefix": "interlex", "ontology_name": "InterLex"},
     {"prefix": "ILX", "ontology_name": "InterLex"},
     {"prefix": "wikidata", "ontology_name": "Wikidata"},
-    {"prefix": "STATO", "ontology_name": "STATO"}
+    {"prefix": "STATO", "ontology_name": "STATO"},
+    {"prefix": "RO", "ontology_name": "RO"},
+    {"prefix": "XCO", "ontology_name": "XCO"},
+    {"prefix": "BFO", "ontology_name": "BFO"},
+    {"prefix": "COB", "ontology_name": "COB"},
+    {"prefix": "BAO", "ontology_name": "BAO"},
+    {"prefix": "GO", "ontology_name": "GO"},
+    {"prefix": "ENVO", "ontology_name": "ENVO"},
+    {"prefix": "SIO", "ontology_name": "SIO"},
+    {"prefix": "UO", "ontology_name": "UO"},
+    {"prefix": "prov", "ontology_name": "PROV"},
+    {"prefix": "owl", "ontology_name": "OWL"}
   ],
   "Ontologies": [
     {
@@ -235,6 +246,61 @@
       "name": "STATO",
       "homepage": "http://stato-ontology.org/",
       "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/stato"
+    },
+    {
+      "name": "RO",
+      "homepage": "http://obofoundry.org/ontology/ro.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/ro"
+    },
+    {
+      "name": "XCO",
+      "homepage": "http://obofoundry.org/ontology/xco.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/xco"
+    },
+    {
+      "name": "BFO",
+      "homepage": "http://obofoundry.org/ontology/bfo.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/bfo"
+    },
+    {
+      "name": "COB",
+      "homepage": "http://obofoundry.org/ontology/cob.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/cob"
+    },
+    {
+      "name": "BAO",
+      "homepage": "http://www.bioassayontology.org/",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/bao"
+    },
+    {
+      "name": "GO",
+      "homepage": "http://obofoundry.org/ontology/go.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/go"
+    },
+    {
+      "name": "ENVO",
+      "homepage": "http://obofoundry.org/ontology/envo.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/envo"
+    },
+    {
+      "name": "SIO",
+      "homepage": "https://github.com/MaastrichtU-IDS/semanticscience",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/sio"
+    },
+    {
+      "name": "UO",
+      "homepage": "http://obofoundry.org/ontology/uo.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/uo"
+    },
+    {
+      "name": "PROV",
+      "homepage": "https://www.w3.org/TR/prov-o/",
+      "api_url": null
+    },
+    {
+      "name": "OWL",
+      "homepage": "https://www.w3.org/TR/owl2-overview/",
+      "api_url": null
     }
   ]
 }
