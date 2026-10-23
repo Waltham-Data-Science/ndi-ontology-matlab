@@ -54,11 +54,18 @@ classdef NCIT < ndi.ontology
             % --- Step 2: Perform Search and IRI Lookup using Base Class Static Helper ---
             % searchOLSAndPerformIRILookup will use 'exact=true' for 'obo_id' searches
             % and its existing logic for 'label' searches (broad search then filter for exact match).
+            % An NCIT code is 'C' followed by digits (e.g. C12727), which
+            % preprocessLookupInput reads as a name, so it is searched as an
+            % obo_id here. Anything else is a name and searches the label.
+            if ~isempty(regexp(search_query, '^[Cc]\d+$', 'once'))
+                search_query = ['NCIT:' upper(search_query)];
+                search_field = 'obo_id';
+            end
             try
                 % Call static method using full class name qualification
                 [id, name, definition, synonyms] = ...
                     ndi.ontology.searchOLSAndPerformIRILookup(...
-                        ['NCIT:',search_query], 'obo_id', ontology_name_ols, ontology_prefix, lookup_type_msg);
+                        search_query, search_field, ontology_name_ols, ontology_prefix, lookup_type_msg);
             catch ME
                 baseME = MException('ndi:ontology:NCIT:LookupFailed', ...
                     'NCIT lookup failed for %s.', lookup_type_msg);

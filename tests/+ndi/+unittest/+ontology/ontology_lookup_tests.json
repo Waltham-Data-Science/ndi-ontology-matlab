@@ -505,6 +505,13 @@
       "expected_name": "Organization"
     },
     {
+      "ontology": "schema",
+      "lookup_string": "schema:isPartOf",
+      "should_succeed": true,
+      "expected_id": "schema:isPartOf",
+      "expected_name": "isPartOf"
+    },
+    {
       "ontology": "IAO",
       "lookup_string": "IAO:NoSuchItem",
       "should_succeed": false,
@@ -514,6 +521,76 @@
     {
       "ontology": "schema",
       "lookup_string": "schema:NoSuchSchemaOrgTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "interlex",
+      "lookup_string": "ILX:0739413",
+      "should_succeed": true,
+      "expected_id": "ILX:0739413",
+      "expected_name": "behavioral approach"
+    },
+    {
+      "ontology": "interlex",
+      "lookup_string": "interlex:ilx_0739413",
+      "should_succeed": true,
+      "expected_id": "ILX:0739413",
+      "expected_name": "behavioral approach"
+    },
+    {
+      "ontology": "interlex",
+      "lookup_string": "ILX:behavior",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "wikidata",
+      "lookup_string": "wikidata:Q30",
+      "should_succeed": true,
+      "expected_id": "wikidata:Q30",
+      "expected_name": "United States"
+    },
+    {
+      "ontology": "wikidata",
+      "lookup_string": "wikidata:Q458",
+      "should_succeed": true,
+      "expected_id": "wikidata:Q458",
+      "expected_name": "European Union"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:CC-BY-4.0",
+      "should_succeed": true,
+      "expected_id": "spdx:CC-BY-4.0",
+      "expected_name": "Creative Commons Attribution 4.0 International"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "SPDX:MIT",
+      "should_succeed": true,
+      "expected_id": "spdx:MIT",
+      "expected_name": "MIT License"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:cc0-1.0",
+      "should_succeed": true,
+      "expected_id": "spdx:CC0-1.0",
+      "expected_name": "Creative Commons Zero v1.0 Universal"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:Creative Commons Attribution 4.0 International",
+      "should_succeed": true,
+      "expected_id": "spdx:CC-BY-4.0",
+      "expected_name": "Creative Commons Attribution 4.0 International"
+    },
+    {
+      "ontology": "spdx",
+      "lookup_string": "spdx:NoSuchLicence-9.9",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
@@ -808,6 +885,153 @@
     {
       "ontology": "OWLTime",
       "lookup_string": "time:Instant",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C12727",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12727",
+      "expected_name": "Heart"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:Heart",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12727",
+      "expected_name": "Heart"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C99999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:80891009",
+      "should_succeed": true,
+      "expected_id": "SNOMED:80891009",
+      "expected_name": "Heart structure"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:Heart structure",
+      "should_succeed": true,
+      "expected_id": "SNOMED:80891009",
+      "expected_name": "Heart structure"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:999999999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:0002677",
+      "should_succeed": true,
+      "expected_id": "EFO:0002677",
+      "expected_name": "saline"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:saline",
+      "should_succeed": true,
+      "expected_id": "EFO:0002677",
+      "expected_name": "saline"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:9999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:0000001",
+      "should_succeed": true,
+      "expected_id": "EFO:0000001",
+      "expected_name": "experimental factor"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:experimental factor",
+      "should_succeed": true,
+      "expected_id": "EFO:0000001",
+      "expected_name": "experimental factor"
+    },
+    {
+      "ontology": "EFO",
+      "lookup_string": "EFO:NoSuchExperimentalFactor",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C3262",
+      "should_succeed": true,
+      "expected_id": "NCIT:C3262",
+      "expected_name": "Neoplasm"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:C12434",
+      "should_succeed": true,
+      "expected_id": "NCIT:C12434",
+      "expected_name": "Blood"
+    },
+    {
+      "ontology": "NCIT",
+      "lookup_string": "NCIT:NoSuchThesaurusTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:22298006",
+      "should_succeed": true,
+      "expected_id": "SNOMED:22298006",
+      "expected_name": "Myocardial infarction"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:Myocardial infarction",
+      "should_succeed": true,
+      "expected_id": "SNOMED:22298006",
+      "expected_name": "Myocardial infarction"
+    },
+    {
+      "ontology": "SNOMED",
+      "lookup_string": "SNOMED:NoSuchClinicalConcept",
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
