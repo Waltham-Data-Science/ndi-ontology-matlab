@@ -1294,6 +1294,48 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:AFR_0001158",
+      "should_succeed": true,
+      "expected_id": "AFO:AFR_0001158",
+      "expected_name": "acquisition time"
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:acquisition time",
+      "should_succeed": true,
+      "expected_id": "AFO:AFR_0001158",
+      "expected_name": "acquisition time"
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:AFR_0003339",
+      "should_succeed": true,
+      "expected_id": "AFO:AFR_0003339",
+      "expected_name": "cluster identifier"
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:cluster identifier",
+      "should_succeed": true,
+      "expected_id": "AFO:AFR_0003339",
+      "expected_name": "cluster identifier"
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:AFZZ_0000001",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "AFO",
+      "lookup_string": "AFO:NoSuchAFOTerm",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }

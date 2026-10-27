@@ -98,7 +98,8 @@
     {"prefix": "SIO", "ontology_name": "SIO"},
     {"prefix": "UO", "ontology_name": "UO"},
     {"prefix": "prov", "ontology_name": "PROV"},
-    {"prefix": "owl", "ontology_name": "OWL"}
+    {"prefix": "owl", "ontology_name": "OWL"},
+    {"prefix": "AFO", "ontology_name": "AFO"}
   ],
   "Ontologies": [
     {
@@ -301,6 +302,11 @@
       "name": "OWL",
       "homepage": "https://www.w3.org/TR/owl2-overview/",
       "api_url": null
+    },
+    {
+      "name": "AFO",
+      "homepage": "https://www.allotrope.org",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/afo"
     }
   ]
 }
