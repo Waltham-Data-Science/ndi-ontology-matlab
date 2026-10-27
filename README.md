@@ -39,6 +39,7 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `spdx` | [SPDX License List](https://spdx.org/licenses/), e.g. `spdx:CC-BY-4.0` (identifier or full licence name) |
 | `ILX` / `interlex` | [InterLex](https://scicrunch.org/scicrunch/interlex/dashboard), e.g. `ILX:0739413`, read from each term's public JSON-LD record (`http://uri.interlex.org/base/ilx_<n>.jsonld`; the SciCrunch API needs a key). IDs only |
 | `wikidata` | [Wikidata](https://www.wikidata.org) items, e.g. `wikidata:Q30`, via the public `wbgetentities` API (ID or English label) |
+| `AFO` | [Allotrope Foundation Ontology](https://www.allotrope.org) (served by [OLS4](https://www.ebi.ac.uk/ols4/ontologies/afo)), e.g. `AFO:AFR_0001158` (acquisition time); the IRI namespace is chosen by the ID prefix (`AFR_` -> `result#`, `AFE_` -> `equipment#`, ...) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
 
@@ -149,7 +150,7 @@ src/ndi/
       InterLex.m, OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m, Wikidata.m,
       SNOMED.m, STATO.m, Uberon.m, WormBase.m,
       RO.m, BFO.m, COB.m, XCO.m, BAO.m, GO.m, ENVO.m, SIO.m, UO.m,
-      PROV.m, OWL.m
+      PROV.m, OWL.m, AFO.m
     +common/
       PathConstants.m       % Path constants
     +fun/
