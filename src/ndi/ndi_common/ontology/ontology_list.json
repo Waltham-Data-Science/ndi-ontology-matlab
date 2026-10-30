@@ -99,7 +99,9 @@
     {"prefix": "UO", "ontology_name": "UO"},
     {"prefix": "prov", "ontology_name": "PROV"},
     {"prefix": "owl", "ontology_name": "OWL"},
-    {"prefix": "AFO", "ontology_name": "AFO"}
+    {"prefix": "AFO", "ontology_name": "AFO"},
+    {"prefix": "CMO", "ontology_name": "CMO"},
+    {"prefix": "MMO", "ontology_name": "MMO"}
   ],
   "Ontologies": [
     {
@@ -307,6 +309,16 @@
       "name": "AFO",
       "homepage": "https://www.allotrope.org",
       "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/afo"
+    },
+    {
+      "name": "CMO",
+      "homepage": "http://obofoundry.org/ontology/cmo.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/cmo"
+    },
+    {
+      "name": "MMO",
+      "homepage": "http://obofoundry.org/ontology/mmo.html",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/mmo"
     }
   ]
 }
