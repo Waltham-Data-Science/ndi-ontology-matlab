@@ -1336,6 +1336,62 @@
       "should_succeed": false,
       "expected_id": "",
       "expected_name": ""
+    },
+    {
+      "ontology": "CMO",
+      "lookup_string": "CMO:0001044",
+      "should_succeed": true,
+      "expected_id": "CMO:0001044",
+      "expected_name": "percent of time spent in voluntary immobility"
+    },
+    {
+      "ontology": "CMO",
+      "lookup_string": "CMO:0000000",
+      "should_succeed": true,
+      "expected_id": "CMO:0000000",
+      "expected_name": "clinical measurement"
+    },
+    {
+      "ontology": "CMO",
+      "lookup_string": "CMO:acoustic startle response measurement",
+      "should_succeed": true,
+      "expected_id": "CMO:0001519",
+      "expected_name": "acoustic startle response measurement"
+    },
+    {
+      "ontology": "CMO",
+      "lookup_string": "CMO:NoSuchMeasurement",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "MMO",
+      "lookup_string": "MMO:0000572",
+      "should_succeed": true,
+      "expected_id": "MMO:0000572",
+      "expected_name": "contextual fear conditioning test"
+    },
+    {
+      "ontology": "MMO",
+      "lookup_string": "MMO:0000000",
+      "should_succeed": true,
+      "expected_id": "MMO:0000000",
+      "expected_name": "measurement method"
+    },
+    {
+      "ontology": "MMO",
+      "lookup_string": "MMO:contextual fear conditioning test",
+      "should_succeed": true,
+      "expected_id": "MMO:0000572",
+      "expected_name": "contextual fear conditioning test"
+    },
+    {
+      "ontology": "MMO",
+      "lookup_string": "MMO:NoSuchMethod",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
     }
   ]
 }

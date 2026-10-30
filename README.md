@@ -40,6 +40,8 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `ILX` / `interlex` | [InterLex](https://scicrunch.org/scicrunch/interlex/dashboard), e.g. `ILX:0739413`, read from each term's public JSON-LD record (`http://uri.interlex.org/base/ilx_<n>.jsonld`; the SciCrunch API needs a key). IDs only |
 | `wikidata` | [Wikidata](https://www.wikidata.org) items, e.g. `wikidata:Q30`, via the public `wbgetentities` API (ID or English label) |
 | `AFO` | [Allotrope Foundation Ontology](https://www.allotrope.org) (served by [OLS4](https://www.ebi.ac.uk/ols4/ontologies/afo)), e.g. `AFO:AFR_0001158` (acquisition time); the IRI namespace is chosen by the ID prefix (`AFR_` -> `result#`, `AFE_` -> `equipment#`, ...) |
+| `CMO` | [Clinical Measurement Ontology](http://obofoundry.org/ontology/cmo.html), e.g. `CMO:0001044` (percent of time spent in voluntary immobility) |
+| `MMO` | [Measurement Method Ontology](http://obofoundry.org/ontology/mmo.html), e.g. `MMO:0000572` (contextual fear conditioning test) |
 
 ## Key Concepts: ID (Node) vs. Name (Label)
 
@@ -150,7 +152,7 @@ src/ndi/
       InterLex.m, OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m, Wikidata.m,
       SNOMED.m, STATO.m, Uberon.m, WormBase.m,
       RO.m, BFO.m, COB.m, XCO.m, BAO.m, GO.m, ENVO.m, SIO.m, UO.m,
-      PROV.m, OWL.m, AFO.m
+      PROV.m, OWL.m, AFO.m, CMO.m, MMO.m
     +common/
       PathConstants.m       % Path constants
     +fun/
