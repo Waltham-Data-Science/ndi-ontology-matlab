@@ -18,7 +18,7 @@ This package is part of the [NDI (Neuroscience Data Interface)](https://ndi.vhla
 | `OM` | [Ontology of Units of Measure](http://obofoundry.org/ontology/om.html) |
 | `PubChem` | [PubChem](https://pubchem.ncbi.nlm.nih.gov/) |
 | `RRID` | [Research Resource Identifiers](https://scicrunch.org/resources) |
-| `SNOMED` | [SNOMED CT](https://www.snomed.org/) |
+| `SNOMED` / `SNOMEDCT` | [SNOMED CT](https://www.snomed.org/) |
 | `EFO` | [Experimental Factor Ontology](https://www.ebi.ac.uk/efo/) |
 | `EDAM` / `format` | [EDAM Bioinformatics Ontology](http://edamontology.org) |
 | `EMPTY` | [Experimental Measurements, Purposes, and Treatments ontologY](https://github.com/Waltham-Data-Science/empty-ontology) |
@@ -150,7 +150,7 @@ src/ndi/
       CHEBI.m, CL.m, EDAM.m, EFO.m, EMPTY.m,
       IAO.m, NCBITaxon.m, NCIT.m, NCIm.m, NDIC.m,
       InterLex.m, OM.m, PATO.m, PubChem.m, RRID.m, SchemaOrg.m, SPDX.m, Wikidata.m,
-      SNOMED.m, STATO.m, Uberon.m, WormBase.m,
+      SNOMED.m, SNOMEDCT.m, STATO.m, Uberon.m, WormBase.m,
       RO.m, BFO.m, COB.m, XCO.m, BAO.m, GO.m, ENVO.m, SIO.m, UO.m,
       PROV.m, OWL.m, AFO.m, CMO.m, MMO.m
     +common/

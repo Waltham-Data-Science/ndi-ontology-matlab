@@ -76,6 +76,7 @@
     {"prefix": "EMPTY", "ontology_name": "EMPTY"},
     {"prefix": "NCIT", "ontology_name": "NCIT"},
     {"prefix": "SNOMED", "ontology_name": "SNOMED"},
+    {"prefix": "SNOMEDCT", "ontology_name": "SNOMEDCT"},
     {"prefix": "WBStrain", "ontology_name": "WormBase"},
     {"prefix": "wormbase", "ontology_name": "WormBase"},
     {"prefix": "EFO", "ontology_name": "EFO"},
@@ -207,6 +208,11 @@
     },
     {
       "name": "SNOMED",
+      "homepage": "https://www.snomed.org/use-snomed-ct",
+      "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/snomed"
+    },
+    {
+      "name": "SNOMEDCT",
       "homepage": "https://www.snomed.org/use-snomed-ct",
       "api_url": "https://www.ebi.ac.uk/ols4/api/ontologies/snomed"
     },

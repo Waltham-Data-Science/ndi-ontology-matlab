@@ -946,6 +946,34 @@
       "expected_name": ""
     },
     {
+      "ontology": "SNOMEDCT",
+      "lookup_string": "SNOMEDCT:36645008",
+      "should_succeed": true,
+      "expected_id": "SNOMEDCT:36645008",
+      "expected_name": "Stimulator"
+    },
+    {
+      "ontology": "SNOMEDCT",
+      "lookup_string": "SNOMEDCT:Stimulator",
+      "should_succeed": true,
+      "expected_id": "SNOMEDCT:36645008",
+      "expected_name": "Stimulator"
+    },
+    {
+      "ontology": "SNOMEDCT",
+      "lookup_string": "SNOMEDCT:999999999999",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
+      "ontology": "SNOMEDCT",
+      "lookup_string": "SNOMEDCT:NoSuchItem",
+      "should_succeed": false,
+      "expected_id": "",
+      "expected_name": ""
+    },
+    {
       "ontology": "EFO",
       "lookup_string": "EFO:0002677",
       "should_succeed": true,
